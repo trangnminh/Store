@@ -123,33 +123,6 @@ Store/fast:
 	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/build
 .PHONY : Store/fast
 
-LinkedList.o: LinkedList.cpp.o
-
-.PHONY : LinkedList.o
-
-# target to build an object file
-LinkedList.cpp.o:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/LinkedList.cpp.o
-.PHONY : LinkedList.cpp.o
-
-LinkedList.i: LinkedList.cpp.i
-
-.PHONY : LinkedList.i
-
-# target to preprocess a source file
-LinkedList.cpp.i:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/LinkedList.cpp.i
-.PHONY : LinkedList.cpp.i
-
-LinkedList.s: LinkedList.cpp.s
-
-.PHONY : LinkedList.s
-
-# target to generate assembly for a file
-LinkedList.cpp.s:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/LinkedList.cpp.s
-.PHONY : LinkedList.cpp.s
-
 item.o: item.cpp.o
 
 .PHONY : item.o
@@ -213,9 +186,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Store"
 	@echo "... edit_cache"
-	@echo "... LinkedList.o"
-	@echo "... LinkedList.i"
-	@echo "... LinkedList.s"
 	@echo "... item.o"
 	@echo "... item.i"
 	@echo "... item.s"

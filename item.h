@@ -27,6 +27,11 @@ public:
         this->genre = "N/A";
         this->available = true;
     }
+
+    string getId() {
+        return this->id;
+    }
+
     // Setter methods
     void setItem();
     void setId();

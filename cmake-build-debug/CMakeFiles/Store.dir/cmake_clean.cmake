@@ -1,5 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Store.dir/LinkedList.cpp.o"
   "CMakeFiles/Store.dir/item.cpp.o"
   "CMakeFiles/Store.dir/main.cpp.o"
   "Store"

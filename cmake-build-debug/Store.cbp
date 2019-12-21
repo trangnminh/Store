@@ -84,9 +84,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/minesk/CLionProjects/Store/LinkedList.cpp">
-			<Option target="Store"/>
-		</Unit>
 		<Unit filename="/home/minesk/CLionProjects/Store/LinkedList.h">
 			<Option target="Store"/>
 		</Unit>

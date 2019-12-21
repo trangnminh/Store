@@ -6,25 +6,3 @@
 
 #IncludeRegexTransform: 
 
-/home/minesk/CLionProjects/Store/LinkedList.h
-iostream
--
-string
--
-
-/home/minesk/CLionProjects/Store/item.cpp
-iostream
--
-string
--
-item.h
-/home/minesk/CLionProjects/Store/item.h
-
-/home/minesk/CLionProjects/Store/item.h
-iostream
--
-string
--
-LinkedList.h
-/home/minesk/CLionProjects/Store/LinkedList.h
-

@@ -9,7 +9,3 @@ CMakeFiles/Store.dir/main.cpp.o: ../LinkedList.h
 CMakeFiles/Store.dir/main.cpp.o: ../item.h
 CMakeFiles/Store.dir/main.cpp.o: ../main.cpp
 
-CMakeFiles/Store.dir/node.cpp.o: ../LinkedList.h
-CMakeFiles/Store.dir/node.cpp.o: ../item.h
-CMakeFiles/Store.dir/node.cpp.o: ../node.cpp
-
