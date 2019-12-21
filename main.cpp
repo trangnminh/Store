@@ -3,13 +3,17 @@
 
 #include "item.h"
 #include "LinkedList.h"
+#include "customer.h"
 
 using namespace std;
 
-// Global list (bad practice, may review later)
-static LinkedList<movie> *movieList = new LinkedList<movie>();
-static LinkedList<dvd> *dvdList = new LinkedList<dvd>();
-static LinkedList<game> *gameList = new LinkedList<game>();
+// Global lists
+static LinkedList<movie> *movieList;
+static LinkedList<dvd> *dvdList;
+static LinkedList<game> *gameList;
+static LinkedList<guest> *guestList;
+static LinkedList<guest> *regularList;
+static LinkedList<guest> *vipList;
 
 /* SUB-FUNCTIONS INITIALIZATION */
 void printMenu();
@@ -26,6 +30,14 @@ bool isGameListEmpty();
 bool isEditItem();
 
 int main() {
+    // Create new lists
+    movieList = new LinkedList<movie>();
+    dvdList = new LinkedList<dvd>();
+    gameList = new LinkedList<game>();
+    guestList = new LinkedList<guest>();
+    regularList = new LinkedList<guest>();
+    vipList = new LinkedList<guest>();
+
     int function = 0;
     do {
         printMenu();
