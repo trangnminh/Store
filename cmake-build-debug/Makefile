@@ -39,10 +39,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/98/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /snap/clion/99/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/98/bin/cmake/linux/bin/cmake -E remove -f
+RM = /snap/clion/99/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /home/minesk/CLionProjects/Store/cmake-build-debug
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/snap/clion/98/bin/cmake/linux/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/snap/clion/99/bin/cmake/linux/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -70,7 +70,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/snap/clion/98/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/snap/clion/99/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -123,33 +123,6 @@ Store/fast:
 	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/build
 .PHONY : Store/fast
 
-item.o: item.cpp.o
-
-.PHONY : item.o
-
-# target to build an object file
-item.cpp.o:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/item.cpp.o
-.PHONY : item.cpp.o
-
-item.i: item.cpp.i
-
-.PHONY : item.i
-
-# target to preprocess a source file
-item.cpp.i:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/item.cpp.i
-.PHONY : item.cpp.i
-
-item.s: item.cpp.s
-
-.PHONY : item.s
-
-# target to generate assembly for a file
-item.cpp.s:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/item.cpp.s
-.PHONY : item.cpp.s
-
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -186,9 +159,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Store"
 	@echo "... edit_cache"
-	@echo "... item.o"
-	@echo "... item.i"
-	@echo "... item.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

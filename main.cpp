@@ -8,12 +8,8 @@
 using namespace std;
 
 // Global lists
-static LinkedList<movie> *movieList;
-static LinkedList<dvd> *dvdList;
-static LinkedList<game> *gameList;
-static LinkedList<guest> *guestList;
-static LinkedList<guest> *regularList;
-static LinkedList<guest> *vipList;
+static LinkedList<item> *itemList;
+static LinkedList<customer> *customerList;
 
 /* SUB-FUNCTIONS INITIALIZATION */
 void printMenu();
@@ -23,20 +19,18 @@ void callFunction(int function);
 void printListOfItems();
 void addItem();
 void updateOrDeleteItem();
+void addCustomer();
 
-bool isMovieListEmpty();
-bool isDVDListEmpty();
-bool isGameListEmpty();
+bool isItemListEmpty();
+bool isCustomerListEmpty();
+bool isDuplicateItem(item item);
+bool isDuplicateCustomer(customer customer);
 bool isEditItem();
 
 int main() {
     // Create new lists
-    movieList = new LinkedList<movie>();
-    dvdList = new LinkedList<dvd>();
-    gameList = new LinkedList<game>();
-    guestList = new LinkedList<guest>();
-    regularList = new LinkedList<guest>();
-    vipList = new LinkedList<guest>();
+    itemList = new LinkedList<item>();
+    customerList = new LinkedList<customer>();
 
     int function = 0;
     do {
@@ -56,14 +50,14 @@ void printMenu() {
          << "1. Print list of items" << endl
          << "2. Add a new item" << endl
          << "3. Update/delete a current item" << endl
+         << "4. Add a new customer" << endl
 
          << "11. Exit" << endl;
 }
 
 // Return user's desired function
 int getFunction(int type) {
-    const string managerFunctions = "1 2 3 11"; // will be added later
-    const string itemFunctions = "1 2 3";
+    const string managerFunctions = "1 2 3 4 11"; // will be added later
     const string editOrDeleteFunctions = "1 2";
 
     string function;
@@ -78,9 +72,7 @@ int getFunction(int type) {
         // Check input against valid functions based on type
         if (type == 1)  // Manage list
             foundFunction = managerFunctions.find(function);
-        if (type == 2) // Access specific type of item
-            foundFunction = itemFunctions.find(function);
-        if (type == 3)  // Delete or update an item
+        if (type == 2)  // Delete or update an item
             foundFunction = editOrDeleteFunctions.find(function);
 
         // Validate input
@@ -104,189 +96,111 @@ void callFunction(int function) {
         case 3:
             updateOrDeleteItem();
             break;
+        case 4:
+            addCustomer();
+            break;
         default:
             cout << "Goodbye" << endl;
     }
 }
 
-// Print list of items by type
+// Print list of items
 void printListOfItems() {
-    cout << "Enter an option:" << endl
-         << "1. Print list of movies" << endl
-         << "2. Print list of DVDs" << endl
-         << "3. Print list of games" << endl;
-
-    int function = getFunction(2);
-
-    switch (function) {
-        case 1: {
-            if (!isMovieListEmpty()) {
-                for (int i = 0; i < movieList->size(); i++)
-                    movieList->get(i).printItem();
-            } break;
+    if (!isItemListEmpty()) {
+        for (int i = 0; i < itemList->size(); i++) {
+            itemList->get(i).printItem();
         }
-        case 2: {
-            if (!isDVDListEmpty()) {
-                for (int i = 0; i < dvdList->size(); i++)
-                    dvdList->get(i).printItem();
-            } break;
-        }
-        case 3: {
-            if (!isGameListEmpty()) {
-                for (int i = 0; i < gameList->size(); i++)
-                    gameList->get(i).printItem();
-            } break;
-        }
-        default:;
     }
 }
 
 // Add new item
 void addItem() {
-    cout << "Enter an option:" << endl
-         << "1. Add new movie record" << endl
-         << "2. Add new DVD" << endl
-         << "3. Add new game" << endl;
-
-    int function = getFunction(2);
-
-    switch (function) {
-        case 1: {
-            movie movie;
-            movie.setItem();
-            movie.setGenre();
-            movieList->append(movie);
-            break;
-        }
-        case 2: {
-            dvd dvd;
-            dvd.setItem();
-            dvd.setGenre();
-            dvdList->append(dvd);
-            break;
-        }
-        case 3: {
-            game game;
-            game.setItem();
-            gameList->append(game);
-            break;
-        }
-        default:; // do nothing
-    }
+    item item;
+    item.setItem();
+    if (!isDuplicateItem(item)) {
+        itemList->append(item);
+        cout << "Added item: ";
+        item.printItem();
+    }   // Else, do nothing
 }
 
-// Update a current item
+// Update/delete a current item
 void updateOrDeleteItem() {
-    cout << "Enter an option:" << endl
-         << "1. Update/delete a movie" << endl
-         << "2. Update/delete a DVD" << endl
-         << "3. Update/delete a game" << endl;
-
-    int function = getFunction(2);
-
     string id;
     cout << "Enter the targeted item's ID: ";
     getline(cin, id);
 
-    switch (function) {
-        case 1: {
-            if (!isMovieListEmpty()) {
-                bool found = false;
-                for (int i = 0; i < movieList->size(); i++) {
-                    movie movie = movieList->get(i);
-                    if (movie.getId() == id) {
-                        found = true;
-                        cout << "Selected item: ";
-                        movie.printItem();
-                        if (isEditItem()) {
-                            movie.setItem();
-                            movie.setGenre();
-                            movieList->set(i, movie);
-                            cout << "Edited item: ";
-                            movie.printItem();
-                        } else
-                            movieList->remove(i);
-                        break;
+    if (!isItemListEmpty()) {
+        bool found = false;
+        for (int i = 0; i < itemList->size(); i++) {
+            item item = itemList->get(i);
+            if (item.getId() == id) {
+                found = true;
+                cout << "Selected item: ";
+                item.printItem();
+                if (isEditItem()) {
+                    item.setItem();
+                    if (!isDuplicateItem(item)) {
+                        itemList->set(i, item);
+                        cout << "Edited item: ";
+                        item.printItem();
                     }
-                }
-                if (!found)
-                    cout << "Index not found" << endl;
-            } break;
+                    else break; // If duplicate, keep item the same
+                } else  // User chose to delete
+                    itemList->remove(i);
+            }
         }
-        case 2: {
-            if (!isDVDListEmpty()) {
-                bool found = false;
-                for (int i = 0; i < dvdList->size(); i++) {
-                    dvd dvd = dvdList->get(i);
-                    if (dvd.getId() == id) {
-                        found = true;
-                        cout << "Selected item: ";
-                        dvd.printItem();
-                        if (isEditItem()) {
-                            dvd.setItem();
-                            dvd.setGenre();
-                            dvdList->set(i, dvd);
-                            cout << "Edited item: ";
-                            dvd.printItem();
-                        } else
-                            dvdList->remove(i);
-                        break;
-                    }
-                }
-                if (!found)
-                    cout << "Index not found" << endl;
-            } break;
-        }
-        case 3: {
-            if (!isGameListEmpty()) {
-                bool found = false;
-                for (int i = 0; i < gameList->size(); i++) {
-                    game game = gameList->get(i);
-                    if (game.getId() == id) {
-                        found = true;
-                        cout << "Selected item: ";
-                        game.printItem();
-                        if (isEditItem()) {
-                            game.setItem();
-                            gameList->set(i, game);
-                            cout << "Edited item: ";
-                            game.printItem();
-                        } else
-                            gameList->remove(i);
-                        break;
-                    }
-                }
-                if (!found)
-                    cout << "Index not found" << endl;
-            } break;
-        }
-        default:;
+        if (!found)
+            cout << "Index not found" << endl;
     }
+}
+
+// Add a new customer
+void addCustomer() {
+    customer customer;
+    customer.setCustomer();
+    if (!isDuplicateCustomer(customer)) {
+        customerList->append(customer);
+        cout << "Added customer: ";
+        customer.printCustomer();
+    }   // Else, do nothing
 }
 
 // Helper
-bool isMovieListEmpty() {
-    if (movieList->size() == 0) {
-        cout << "Movie list is empty" << endl;
+bool isItemListEmpty() {
+    if (itemList->size() == 0) {
+        cout << "Item list is empty" << endl;
         return true;
     }
     return false;
 }
 
-bool isDVDListEmpty() {
-    if (dvdList->size() == 0) {
-        cout << "DVD list is empty" << endl;
+bool isCustomerListEmpty() {
+    if (customerList->size() == 0) {
+        cout << "Customer list is empty" << endl;
         return true;
     }
     return false;
 }
 
-bool isGameListEmpty() {
-    if (gameList->size() == 0) {
-        cout << "Game list is empty" << endl;
-        return true;
+bool isDuplicateItem(item item) {
+    for (int i = 0; i < itemList->size(); i++) {
+        if (item.getId() == itemList->get(i).getId()) {
+            cout << "This item is already in the list and will not be added or deleted" << endl;
+            return true;
+        }
     }
     return false;
+}
+
+bool isDuplicateCustomer(customer customer) {
+    for (int i = 0; i < customerList->size(); i++) {
+        if (customer.getCustomerId() == customerList->get(i).getCustomerId()) {
+            cout << "This customer is already in the list and will not be added or deleted" << endl;
+            return true;
+        }
+        return false;
+    }
 }
 
 bool isEditItem() {
@@ -294,9 +208,12 @@ bool isEditItem() {
          << "1. Update this item" << endl
          << "2. Delete this item" << endl;
 
-    int function = getFunction(3);
+    int function = getFunction(2);
     return function == 1;
 }
+
+
+
 
 //         << "2. Add new customer of update an existing customer" << endl
 //         << "3. Promote an existing customer" << endl

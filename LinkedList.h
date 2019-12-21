@@ -8,7 +8,6 @@ using namespace std;
 
 template <typename T>
 struct node {
-    int index = 0;
     T data;
     node<T> *next;
 };
@@ -37,7 +36,7 @@ public:
     // Return current size of list
     virtual int size();
     // Add a T object at specified index, increment size
-    virtual bool insert(int index, T);
+    //virtual bool insert(int index, T);
     // Add a T object at end of linked list, increment size
     virtual bool append(T);
     // Add a T object at start of linked list, increment size
@@ -53,7 +52,7 @@ public:
     // Get object of desired index, return false if failed
     virtual T get(int index);
     // Clear entire array
-    virtual void clear();
+    //virtual void clear();
     // Sort the list, given a comparison function
     //virtual void sort(int (*cmp) (T&, T&));
 };
@@ -114,26 +113,6 @@ node<T>* LinkedList<T>::getNode(int index) {
 template<typename T>
 int LinkedList<T>::size(){
     return _size;
-}
-
-// Insert object T at specified index
-template <typename T>
-bool LinkedList<T>::insert(int index, T _node) {
-    if (index >= _size) {
-        return append(_node);
-    }
-    if (index == 0) {
-        return unshift(_node);
-    }
-    // Relink associated nodes
-    node<T> *tmp = new node<T>(), *prev = getNode(index - 1);
-    tmp->data = _node;
-    tmp->next = prev->next;
-    prev->next = tmp;
-
-    _size++;
-    isCached = false;
-    return true;
 }
 
 // Append object T at end of list
@@ -258,12 +237,32 @@ T LinkedList<T>::get(int index) {
     return (tmp ? tmp->data : T());
 }
 
-// Clear list of all members (WILL NOT FREE/DELETE POINTERS AND CLASSES)
-template <typename T>
-void LinkedList<T>::clear() {
-    while (size() > 0)
-        shift();
-}
+//// Insert object T at specified index
+//template <typename T>
+//bool LinkedList<T>::insert(int index, T _node) {
+//    if (index >= _size) {
+//        return append(_node);
+//    }
+//    if (index == 0) {
+//        return unshift(_node);
+//    }
+//    // Relink associated nodes
+//    node<T> *tmp = new node<T>(), *prev = getNode(index - 1);
+//    tmp->data = _node;
+//    tmp->next = prev->next;
+//    prev->next = tmp;
+//
+//    _size++;
+//    isCached = false;
+//    return true;
+//}
+//
+//// Clear list of all members (WILL NOT FREE/DELETE POINTERS AND CLASSES)
+//template <typename T>
+//void LinkedList<T>::clear() {
+//    while (size() > 0)
+//        shift();
+//}
 
 
 #endif //STORE_LINKEDLIST_H
