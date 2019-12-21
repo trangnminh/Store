@@ -19,6 +19,7 @@ inline void item::printItem() {
          << this->loanType << ", " << this->numOfCopies << ", " << this->rentalFee << endl;
 }
 
+
 // Set item id
 inline void item::setId() {
     cout << "Enter item's ID: ";
@@ -130,6 +131,10 @@ inline void item::setAll(const string &id, const string &title, const string &re
     this -> rentalFee = rentalFee;
 }
 
+inline string item::toString() {
+    return this->id+","+this->title+","+this->rentalType+","+this->loanType
+           +","+to_string(this->numOfCopies)+","+to_string(this->rentalFee);
+}
 
 
 // Set genre
@@ -156,3 +161,13 @@ inline void itemWithGenre::printItemWithGenre() {
          << this->loanType << ", " << this->numOfCopies << ", "
          << this->rentalFee << ", " << this->genre << endl;
 }
+
+inline void itemWithGenre::setGenre1(const string &genre) {
+    itemWithGenre::genre = genre;
+}
+
+inline string itemWithGenre::toString() {
+    return this->id+","+this->title+","+this->rentalType+","+this->loanType
+    +","+to_string(this->numOfCopies)+","+to_string(this->rentalFee)+","+this->genre;
+}
+

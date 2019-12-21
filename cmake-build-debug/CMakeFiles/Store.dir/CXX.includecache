@@ -6,3 +6,29 @@
 
 #IncludeRegexTransform: 
 
+/Users/tranmachsohan/Desktop/Store/LinkedList.h
+iostream
+-
+string
+-
+
+/Users/tranmachsohan/Desktop/Store/item.cpp
+item.h
+/Users/tranmachsohan/Desktop/Store/item.h
+
+/Users/tranmachsohan/Desktop/Store/item.h
+iostream
+-
+string
+-
+
+/Users/tranmachsohan/Desktop/Store/main.cpp
+iostream
+-
+fstream
+-
+item.cpp
+/Users/tranmachsohan/Desktop/Store/item.cpp
+LinkedList.h
+/Users/tranmachsohan/Desktop/Store/LinkedList.h
+

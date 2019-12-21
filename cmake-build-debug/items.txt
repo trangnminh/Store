@@ -1,0 +1,6 @@
+I002-1988,White Castle,Record,1-week,3,0.990000,Comedy
+I004-1999,Rat Race,DVD,1-week,3,1.990000,Horror
+I001-2001,Medal of Honour,Game,1-week,3,3.990000
+I003-1992,Alpha Dog,Record,1-week,3,1.990000,Action
+I006-2013,Halloween,DVD,2-day,1,0.990000,Horror
+I005-2015,Halo,Game,2-day,2,4.990000

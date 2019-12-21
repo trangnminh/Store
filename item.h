@@ -36,7 +36,7 @@ public:
     void setLoanType();
     void setNumOfCopies();
     void setRentalFee();
-
+    string toString();
     // Helper
     void printItem();
 };
@@ -47,7 +47,9 @@ protected:
     string genre;
 public:
     void setGenre();
+    void setGenre1(const string &genre);
     void printItemWithGenre();
+    string toString();
 };
 
 // Movie
