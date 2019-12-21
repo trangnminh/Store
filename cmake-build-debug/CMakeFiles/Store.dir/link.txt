@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/Store.dir/main.cpp.o CMakeFiles/Store.dir/item.cpp.o CMakeFiles/Store.dir/LinkedList.cpp.o  -o Store 
