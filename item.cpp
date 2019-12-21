@@ -1,12 +1,11 @@
-#include <iostream>
-#include <string>
+//
+// Created by Trần Mạch Sở Hân on 12/20/19.
+//
 
 #include "item.h"
 
-using namespace std;
-
 // Item setter
-void item::setItem() {
+inline void item::setItem() {
     setId();
     setTitle();
     setLoanType();
@@ -15,15 +14,13 @@ void item::setItem() {
 }
 
 // Print item's info
-void item::printItem() {
-    cout.precision(2);
+inline void item::printItem() {
     cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
-         << this->loanType << ", " << this->numOfCopies << ", "
-         << fixed << this->rentalFee << ", " << this->genre << endl;
+         << this->loanType << ", " << this->numOfCopies << ", " << this->rentalFee << endl;
 }
 
 // Set item id
-void item::setId() {
+inline void item::setId() {
     cout << "Enter item's ID: ";
     while (true) {
         string s;
@@ -38,7 +35,7 @@ void item::setId() {
             }
         }
         if (valid && s.length() == 9 && s[0] == 'I' && s[4] == '-') {
-            this->id = s;
+            this -> id = s;
             break;
         }
         else {
@@ -49,7 +46,7 @@ void item::setId() {
 }
 
 // Set item title
-void item::setTitle() {
+inline void item::setTitle() {
     cout << "Enter item's title: ";
     while (true) {
         string s;
@@ -64,7 +61,7 @@ void item::setTitle() {
 }
 
 // Set item loan type
-void item::setLoanType() {
+inline void item::setLoanType() {
     cout << "Enter item's loan type: ";
     while (true) {
         string s;
@@ -82,7 +79,7 @@ void item::setLoanType() {
 }
 
 // Set number of copies
-void item::setNumOfCopies() {
+inline void item::setNumOfCopies() {
     cout << "Enter item's number of copies: ";
     while (true) {
         string num;
@@ -98,7 +95,7 @@ void item::setNumOfCopies() {
 }
 
 // Set rental fee
-void item::setRentalFee() {
+inline void item::setRentalFee() {
     cout << "Enter item's rental fee: ";
     while (true) {
         string fee;
@@ -123,8 +120,20 @@ void item::setRentalFee() {
     }
 }
 
+inline void item::setAll(const string &id, const string &title, const string &rentalType, const string &loanType, int numOfCopies,
+           double rentalFee) {
+    this -> id = id;
+    this -> title = title;
+    this -> rentalType = rentalType;
+    this -> loanType = loanType;
+    this -> numOfCopies = numOfCopies;
+    this -> rentalFee = rentalFee;
+}
+
+
+
 // Set genre
-void item::setGenre() {
+inline void itemWithGenre::setGenre() {
     cout << "Enter item's genre: ";
     while (true) {
         string s;
@@ -141,3 +150,9 @@ void item::setGenre() {
     }
 }
 
+// Print item's info (with genre)
+inline void itemWithGenre::printItemWithGenre() {
+    cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
+         << this->loanType << ", " << this->numOfCopies << ", "
+         << this->rentalFee << ", " << this->genre << endl;
+}

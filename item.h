@@ -1,13 +1,14 @@
-#ifndef STORE_ITEM_H
-#define STORE_ITEM_H
+//
+// Created by Trần Mạch Sở Hân on 12/20/19.
+//
 
+#ifndef TRANG_ITEM_H
+#define TRANG_ITEM_H
 #include <iostream>
 #include <string>
-#include "LinkedList.h"
 
 using namespace std;
 
-// Item
 class item {
 protected:
     string id;
@@ -17,36 +18,40 @@ protected:
     int numOfCopies;
     double rentalFee;
     bool available;
-    string genre;
-
 public:
     // Constructor
     item() {
         this->numOfCopies = 0;
         this->rentalFee = 0;
-        this->genre = "N/A";
         this->available = true;
     }
-
-    string getId() {
-        return this->id;
-    }
-
     // Setter methods
     void setItem();
+
+    void setAll(const string &id, const string &title, const string &rentalType, const string &loanType, int numOfCopies,
+         double rentalFee);
+
     void setId();
     void setTitle();
     void setLoanType();
     void setNumOfCopies();
     void setRentalFee();
-    void setGenre();
 
     // Helper
     void printItem();
 };
 
+// Item with genre
+class itemWithGenre : public item {
+protected:
+    string genre;
+public:
+    void setGenre();
+    void printItemWithGenre();
+};
+
 // Movie
-class movie : public item {
+class movie : public itemWithGenre {
 public:
     movie() {
         this->rentalType = "movie";
@@ -54,7 +59,7 @@ public:
 };
 
 // DVD
-class dvd : public item {
+class dvd : public itemWithGenre {
 public:
     dvd() {
         this->rentalType = "dvd";
@@ -69,5 +74,4 @@ public:
     }
 };
 
-
-#endif //STORE_ITEM_H
+#endif //TRANG_ITEM_H
