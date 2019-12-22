@@ -34,6 +34,14 @@ public:
         return this->id;
     }
 
+    string getTitle() {
+        return this->title;
+    }
+
+    int getNumOfCopies() {
+        return this->numOfCopies;
+    }
+
     // Setters
     void setId();
     void setTitle();

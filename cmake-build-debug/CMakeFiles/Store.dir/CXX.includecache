@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/minesk/CLionProjects/Store/Item.cpp
-Item.h
-/home/minesk/CLionProjects/Store/Item.h
-
 /home/minesk/CLionProjects/Store/Item.h
 iostream
 -
