@@ -6,6 +6,7 @@ CMakeFiles/Store.dir/item.cpp.o: ../item.cpp
 CMakeFiles/Store.dir/item.cpp.o: ../item.h
 
 CMakeFiles/Store.dir/main.cpp.o: ../LinkedList.h
+CMakeFiles/Store.dir/main.cpp.o: ../customer.h
 CMakeFiles/Store.dir/main.cpp.o: ../item.h
 CMakeFiles/Store.dir/main.cpp.o: ../main.cpp
 

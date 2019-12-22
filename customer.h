@@ -1,48 +1,96 @@
-#ifndef STORE_CUSTOMER_H
-#define STORE_CUSTOMER_H
+//
+// Created by Trần Mạch Sở Hân on 12/21/19.
+//
 
 #include <iostream>
 #include <string>
-#include "item.h"
-#include "LinkedList.h"
 
 using namespace std;
 
+class Guest;
+class Regular;
+class VIP;
+
 class customer {
 protected:
-    string customerId;
+    string id;
     string name;
     string address;
     string phone;
-    string level;
-    LinkedList<movie> rentedMovies;
-    LinkedList<dvd> rentedDVDs;
-    LinkedList<game> rentedGames;
+    int numberOfRentals;
+    string type ;
+    int totalRentals;
 public:
-    customer() {
-        this->level = "Guest";
-    };
-    ~customer();
-};
 
-class guest : public customer {
 
-};
+public:
 
-class regular : public customer {
-    regular() {
-        this->level = "Regular";
+
+public:
+    //Constructors
+    customer(){
+        this->numberOfRentals =0;
     }
+    // Setters
+    void setId(const string &id);
+    void setName(const string &name);
+    void setAddress(const string &address);
+    void setPhone(const string &phone);
+    void setId();
+    void setName();
+    void setAddress();
+    void setPhone();
+    void setType(const string &type);
+    void setAll(const string &id,const string &name,const string &address,const string &phone);
+    void setTotalRentals(int totalRentals);
+
+    //Getters
+    const string &getId() const;
+    const string &getName() const;
+    const string &getAddress() const;
+    const string &getPhone() const;
+    int getNumberOfRentals() const;
+    const string &getType() const;
+    int getTotalRentals() const;
+
+//    void upgrade();
+    void upgrade(customer guest);
+
+    //rentBook items
+    virtual bool rentBook(int numOfBorrow);
+
+    virtual bool turnBook();
 };
 
-class vip : public customer {
+class Guest : public customer{
+public:
+
+    //Constructor
+    Guest() : customer(){
+        setId();
+        setName();
+        setPhone();
+        setAddress();
+        this -> type = "Guest";
+    }
+
+    bool rentBook(int numOfBorrow) override ;
+};
+
+
+class VIP : public customer{
 private:
-    int rewardPoints;
+    int point ;
 public:
-    vip() {
-        this->level = "VIP";
-        this->rewardPoints = 0;
+    VIP(){
+        this -> type = "VIP";
     }
 };
 
-#endif //STORE_CUSTOMER_H
+class Regular : public customer{
+public:
+    Regular(){
+        this -> type = "Regular";
+    }
+};
+
