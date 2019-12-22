@@ -1,63 +1,167 @@
 #include <iostream>
 #include <string>
-
-#include "item.h"
-#include "LinkedList.h"
-#include "customer.h"
+#include "Item.h"
+#include "List.h"
 
 using namespace std;
 
-// Global lists
-static LinkedList<item> *itemList;
-static LinkedList<customer> *customerList;
+// Enums for different types of functions
+enum functionType{manageList, getItemType, editOrDelete};
 
-/* SUB-FUNCTIONS INITIALIZATION */
-void printMenu();
-int getFunction(int type);
-void callFunction(int function);
+// Global functions
+void printItems(List<Item*> itemList);
+void addItem(List<Item*> *itemList);
+void editOrDeleteItem(List<Item*> *itemList);
 
-void printListOfItems();
-void addItem();
-void updateOrDeleteItem();
-void addCustomer();
-
-bool isItemListEmpty();
-bool isCustomerListEmpty();
-bool isDuplicateItem(item item);
-bool isDuplicateCustomer(customer customer);
+// Helpers
+int getFunction(functionType type);
+bool isDuplicateItem(Item *item, List<Item*> *itemList);
 bool isEditItem();
 
+/* MAIN */
 int main() {
-    // Create new lists
-    itemList = new LinkedList<item>();
-    customerList = new LinkedList<customer>();
+    // Create a list to store all items
+    List<Item*> itemList;
 
-    int function = 0;
-    do {
-        printMenu();
-        function = getFunction(1);
-        callFunction(function);
-    } while (function != 11);
+    addItem(&itemList);
+    addItem(&itemList);
+    addItem(&itemList);
+    addItem(&itemList);
+    addItem(&itemList);
+
+    cout << "After add: " << endl;
+    printItems(itemList);
+    cout << itemList.getSize() << endl;
+
+    cout << "Delete 2 items" << endl;
+    editOrDeleteItem(&itemList);
+    editOrDeleteItem(&itemList);
+
+    cout << "After delete" << endl;
+    printItems(itemList);
+    cout << itemList.getSize() << endl;
+
+    cout << "Delete head: " << endl;
+    itemList.deleteHead();
+
+    cout << "Delete tail: " << endl;
+    itemList.deleteTail();
+
+    cout << "After delete 2" << endl;
+    printItems(itemList);
+    cout << itemList.getSize() << endl;
+
+    cout << "Edit last: " << endl;
+    editOrDeleteItem(&itemList);
+
+    cout << "After edit: " << endl;
+    printItems(itemList);
+    cout << itemList.getSize() << endl;
+
+    cout << "Edit again: " << endl;
+    editOrDeleteItem(&itemList);
+
+    cout << "After edit 2: " << endl;
+    printItems(itemList);
+    cout << itemList.getSize() << endl;
+
+    cout << "Delete last: " << endl;
+    editOrDeleteItem(&itemList);
+
+    cout << "Final:" << endl;
+    printItems(itemList);
+    cout << itemList.getSize() << endl;
 
     return 0;
 }
 
-// Print function menu
-void printMenu() {
-    cout <<"------------------------------" << endl
-         <<"Welcome to Genie's video store" << endl
-         << "Enter an option below" << endl
-         << "1. Print list of items" << endl
-         << "2. Add a new item" << endl
-         << "3. Update/delete a current item" << endl
-         << "4. Add a new customer" << endl
+// Print list of items
+void printItems(List<Item*> itemList) {
+    if (itemList.getSize() != 0) {
+        for (int i = 0; i < itemList.getSize(); i++) {
+            itemList.get(i)->display();
+        }
+    }
+}
 
-         << "11. Exit" << endl;
+// Add a new item to list
+void addItem(List<Item*> *itemList) {
+    cout << "Enter an option:" << endl
+         << "1. Add a new Movie" << endl
+         << "2. Add a new DVD" << endl
+         << "3. Add a new Game" << endl;
+
+    int function = getFunction(getItemType);
+
+    Item *item = nullptr;
+
+    switch (function) {
+        case 1: item = new Movie(); break;
+        case 2: item = new DVD(); break;
+        case 3: item = new Game(); break;
+        default:;   // Do nothing
+    }
+
+    // If item is not duplicate, append to list
+    if (!isDuplicateItem(item, itemList)) {
+        itemList->append(item);
+        cout << "Added: ";
+        item->display();
+    } else  {
+        // Else, free memory
+        cout << "Duplicate ID, item will not be added" << endl;
+        delete item;
+    }
+}
+
+// Update a current item
+void editOrDeleteItem(List<Item*> *itemList) {
+    string id;
+    cout << "Enter the targeted item's ID: ";
+    getline(cin, id);
+
+    int listSize = itemList->getSize();
+    bool found = false;
+
+    // If list is not empty, search for item
+    if (listSize != 0) {
+        for (int i = 0; i < listSize; i++) {
+            Item *tmp = itemList->get(i);
+            if (id == tmp->getId()) {
+                found = true;
+                string oldId = tmp->getId();
+
+                cout << "Selected item: ";
+                tmp->display();
+
+                if (isEditItem()) {
+                    tmp->setItem();
+                    // If edited item is a duplicate, put back old id
+                    if (isDuplicateItem(tmp, itemList)) {
+                        cout << "Duplicate ID, reverting to old ID.." << endl;
+                        tmp->setId(oldId);
+                    }
+                    cout << "Edited item: ";
+                    tmp->display();
+                    break;
+                }
+                else {
+                    // Delete current node
+                    itemList->deleteNode(i);
+                    cout << "Item deleted" << endl;
+                    break;
+                }
+            }
+        }
+        if (!found)
+            cout << "Index not found" << endl;
+    }
 }
 
 // Return user's desired function
-int getFunction(int type) {
-    const string managerFunctions = "1 2 3 4 11"; // will be added later
+int getFunction(functionType type) {
+    const string listFunctions = "1 2 3";
+    const string itemTypeFunctions = "1 2 3";
     const string editOrDeleteFunctions = "1 2";
 
     string function;
@@ -69,10 +173,13 @@ int getFunction(int type) {
         size_t foundSpace = function.find_first_of(' ');
         size_t foundFunction = 0;
 
-        // Check input against valid functions based on type
-        if (type == 1)  // Manage list
-            foundFunction = managerFunctions.find(function);
-        if (type == 2)  // Delete or update an item
+        if (type == manageList)  // Manage list
+            foundFunction = listFunctions.find(function);
+
+        if (type == getItemType) // Fetch a movie, dvd or game
+            foundFunction = itemTypeFunctions.find(function);
+
+        if (type == editOrDelete)  // Delete or update an item
             foundFunction = editOrDeleteFunctions.find(function);
 
         // Validate input
@@ -84,143 +191,26 @@ int getFunction(int type) {
     return stoi(function);
 }
 
-// Call user's desired function
-void callFunction(int function) {
-    switch (function) {
-        case 1:
-            printListOfItems();
-            break;
-        case 2:
-            addItem();
-            break;
-        case 3:
-            updateOrDeleteItem();
-            break;
-        case 4:
-            addCustomer();
-            break;
-        default:
-            cout << "Goodbye" << endl;
-    }
-}
-
-// Print list of items
-void printListOfItems() {
-    if (!isItemListEmpty()) {
-        for (int i = 0; i < itemList->size(); i++) {
-            itemList->get(i).printItem();
-        }
-    }
-}
-
-// Add new item
-void addItem() {
-    item item;
-    item.setItem();
-    if (!isDuplicateItem(item)) {
-        itemList->append(item);
-        cout << "Added item: ";
-        item.printItem();
-    }   // Else, do nothing
-}
-
-// Update/delete a current item
-void updateOrDeleteItem() {
-    string id;
-    cout << "Enter the targeted item's ID: ";
-    getline(cin, id);
-
-    if (!isItemListEmpty()) {
-        bool found = false;
-        for (int i = 0; i < itemList->size(); i++) {
-            item item = itemList->get(i);
-            if (item.getId() == id) {
-                found = true;
-                cout << "Selected item: ";
-                item.printItem();
-                if (isEditItem()) {
-                    item.setItem();
-                    if (!isDuplicateItem(item)) {
-                        itemList->set(i, item);
-                        cout << "Edited item: ";
-                        item.printItem();
-                    }
-                    else break; // If duplicate, keep item the same
-                } else  // User chose to delete
-                    itemList->remove(i);
-            }
-        }
-        if (!found)
-            cout << "Index not found" << endl;
-    }
-}
-
-// Add a new customer
-void addCustomer() {
-    customer customer;
-    customer.setCustomer();
-    if (!isDuplicateCustomer(customer)) {
-        customerList->append(customer);
-        cout << "Added customer: ";
-        customer.printCustomer();
-    }   // Else, do nothing
-}
-
-// Helper
-bool isItemListEmpty() {
-    if (itemList->size() == 0) {
-        cout << "Item list is empty" << endl;
-        return true;
-    }
-    return false;
-}
-
-bool isCustomerListEmpty() {
-    if (customerList->size() == 0) {
-        cout << "Customer list is empty" << endl;
-        return true;
-    }
-    return false;
-}
-
-bool isDuplicateItem(item item) {
-    for (int i = 0; i < itemList->size(); i++) {
-        if (item.getId() == itemList->get(i).getId()) {
-            cout << "This item is already in the list and will not be added or deleted" << endl;
-            return true;
-        }
-    }
-    return false;
-}
-
-bool isDuplicateCustomer(customer customer) {
-    for (int i = 0; i < customerList->size(); i++) {
-        if (customer.getCustomerId() == customerList->get(i).getCustomerId()) {
-            cout << "This customer is already in the list and will not be added or deleted" << endl;
-            return true;
+// Check if an item is a duplicate
+bool isDuplicateItem(Item *item, List<Item*> *itemList) {
+    int listSize = itemList->getSize();
+    if (listSize != 0) {
+        for (int i = 0; i < listSize; i++) {
+            Item *tmp = itemList->get(i);
+            if (item->getId() == tmp->getId())
+                return true;
         }
         return false;
     }
+    return false;
 }
 
+// Let user edit or delete an item
 bool isEditItem() {
     cout << "Enter an option:" << endl
-         << "1. Update this item" << endl
+         << "1. Edit this item" << endl
          << "2. Delete this item" << endl;
 
-    int function = getFunction(2);
+    int function = getFunction(editOrDelete);
     return function == 1;
 }
-
-
-
-
-//         << "2. Add new customer of update an existing customer" << endl
-//         << "3. Promote an existing customer" << endl
-//         << "4. Rent an item" << endl
-//         << "5. Return an item" << endl
-//         << "6. Display all items" << endl
-//         << "7. Display out-of-stock items" << endl
-//         << "8. Display all customers" << endl
-//         << "9. Display group of customers" << endl
-//         << "10. Search items or customers" << endl

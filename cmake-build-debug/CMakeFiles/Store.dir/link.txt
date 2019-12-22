@@ -1,1 +1,1 @@
-/usr/bin/c++  -g   CMakeFiles/Store.dir/main.cpp.o  -o Store 
+/usr/bin/c++  -g   CMakeFiles/Store.dir/main.cpp.o CMakeFiles/Store.dir/Item.cpp.o  -o Store 

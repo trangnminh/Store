@@ -84,13 +84,13 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/minesk/CLionProjects/Store/LinkedList.h">
+		<Unit filename="/home/minesk/CLionProjects/Store/Item.cpp">
 			<Option target="Store"/>
 		</Unit>
-		<Unit filename="/home/minesk/CLionProjects/Store/customer.h">
+		<Unit filename="/home/minesk/CLionProjects/Store/Item.h">
 			<Option target="Store"/>
 		</Unit>
-		<Unit filename="/home/minesk/CLionProjects/Store/item.h">
+		<Unit filename="/home/minesk/CLionProjects/Store/List.h">
 			<Option target="Store"/>
 		</Unit>
 		<Unit filename="/home/minesk/CLionProjects/Store/main.cpp">
