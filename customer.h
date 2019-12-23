@@ -21,11 +21,10 @@ protected:
 
 protected:
     string type ;
-    int totalRentals;
     List<string> *itemList;
 
 public:
-    List<string> *getItemList() const;
+
 
 public:
 
@@ -51,7 +50,7 @@ public:
     const string &getPhone() const;
     int getNumberOfRentals() const;
     const string &getType() const;
-    int getTotalRentals() const;
+    List<string> *getItemList() const;
 
 //    void upgrade();
     void upgrade(customer guest);
@@ -74,7 +73,6 @@ public:
     Guest() {
         this -> type = "Guest";
         this -> numberOfRentals = 0;
-        this -> totalRentals = 0;
         itemList = new List<string>;
     }
 
@@ -100,7 +98,7 @@ class Regular : public customer{
 public:
     Regular(){
         this -> type = "Regular";
-        this -> totalRentals = 0;
+        this -> numberOfRentals = 0;
     }
 };
 

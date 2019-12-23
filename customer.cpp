@@ -109,10 +109,6 @@ inline void customer::setAll(const string &id, const string &name, const string 
     this -> phone = phone;
 }
 
-inline int customer::getTotalRentals() const {
-    return totalRentals;
-}
-
 inline const string &customer::getId() const {
     return id;
 }
@@ -151,7 +147,6 @@ inline void customer::upgrade(customer guest) {
 
 //Rent books
 inline bool customer::rentItems() {
-    numberOfRentals++;
     return true;
 }
 
@@ -163,8 +158,6 @@ inline bool customer::turnItems(string itemReturn) {
     //Run through loop to find the item in the item list
     for (int i = 0; i < getItemList()->getSize(); ++i) {
         if (itemReturn == getItemList()->get(i)){
-            numberOfRentals--;
-            totalRentals++;
             getItemList()->deleteNode(i);
             return true;
         } else{
@@ -179,6 +172,7 @@ inline void customer::printCustomer() {
     cout.precision(2);
     cout << this -> id << " ," << this -> name << " ," << this -> address << "," <<
     this -> phone << "," << this -> numberOfRentals << "," << this -> type <<endl;
+    //Print the list item that customer borrow
     if(getItemList()->getSize()!=0){
         for (int i = 0; i < getItemList()->getSize(); ++i) {
             cout << getItemList()->get(i)<<endl;
@@ -192,11 +186,7 @@ inline List<string> *customer::getItemList() const {
 
 inline bool Guest::rentItems() {
     //Once the number renting is more than 2 then false
-    if (getNumberOfRentals() > 1){
-        return false;
-    }
-    numberOfRentals++;
-    return true;
+    return getItemList()->getSize() < 1;
 }
 
 inline bool VIP::rentItems() {
