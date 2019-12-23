@@ -169,7 +169,7 @@ void promoteCustomer(){
         customer *getCustomer = customerList.get(i);
         if (id == getCustomer->getId().substr(1, 3)) {
             found = true;
-            if (getCustomer->getTotalRentals() > 2 && getCustomer->getType() == "Guest") {
+            if (getCustomer->getTotalRentals() > 3 && getCustomer->getType() == "Guest") {
                 customer *newRegular = new Regular();
                 newRegular->upgrade(*getCustomer);  //get information from the guest to the new regular
                 customerList.append(newRegular);
@@ -177,7 +177,7 @@ void promoteCustomer(){
                 qualifi = true;
                 break;
             }
-            if (getCustomer->getTotalRentals() > 2 && getCustomer->getType() == "Regular"){
+            if (getCustomer->getTotalRentals() > 3 && getCustomer->getType() == "Regular"){
                 VIP *newVip = new VIP();
                 newVip->upgrade(*getCustomer);
                 customerList.deleteNode(i);
@@ -214,41 +214,6 @@ void rentItem(){
         cout << "Id was not found" <<endl;
 }
 
-void returnItem(){
-    string id;
-    cout << "Please enter id: ";
-    getline(cin,id);
-    bool found = false;
-    for (int i = 0; i < customerList.getSize(); ++i) {
-        customer *getCustomer = customerList.get(i);
-        if (id == getCustomer->getId().substr(1, 3)){
-            checkItemBorrowed(getCustomer);
-            found = true;
-            break;
-        }
-    }
-    if(!found)
-        cout << "Id was not found" <<endl;
-}
-
-void checkItemBorrowed(customer *customer){
-    string itemReturn;
-    getline(cin,itemReturn);
-    for (int i = 0; i < customer->getItemList()->getSize(); ++i) {
-        if (itemReturn == customer->getItemList()->get(i)){
-            cout << "Return item: " << itemReturn << "\nYes\nNo"<<endl;
-            int function = getFunction(3);
-            if (function == 1){
-                customer->turnItems();
-                return ;
-            }
-        } else{
-            cout << "Customer does not borrow this item" <<endl;
-            return ;
-        }
-    }
-}
-
 void checkRentBook(customer *customer){
     int borrowBooks = 0;
     while (true){
@@ -267,6 +232,44 @@ void checkRentBook(customer *customer){
             cout << "Number of rent book is 2" <<endl;
             break;
         }
+    }
+}
+
+void returnItem(){
+    string id;
+    cout << "Please enter id: ";
+    getline(cin,id);
+    bool found = false;
+    for (int i = 0; i < customerList.getSize(); ++i) {
+        customer *getCustomer = customerList.get(i);
+        if (id == getCustomer->getId().substr(1, 3)){
+            checkItemBorrowed(getCustomer);
+            found = true;
+            break;
+        }
+    }
+    if(!found)
+        cout << "Id was not found" <<endl;
+}
+
+void checkItemBorrowed(customer *customer) {
+    string itemReturn;
+    getline(cin, itemReturn);
+    while (true) {
+        //get the validate of item return and item list
+        if (customer->turnItems(itemReturn)) {
+            cout << "Return successfully. ";
+            //if no list , break
+            if (customer->getItemList()->getSize() != 0) {
+                cout << "\n1. Yes\n2. No \nContinue? ";
+                int function = getFunction(3);
+                if (function == 2) {
+                    break;
+                }
+            } else
+                break;
+        } else
+            break;
     }
 }
 
@@ -322,9 +325,6 @@ void displayGroupCustomer(){
             }
             default:
                 break;
-        }
-        if (!get){
-            cout << "No information of group you require in the list" <<endl;
         }
     } else
         cout << "No customer in the list" <<endl;

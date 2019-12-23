@@ -18,6 +18,8 @@ protected:
     string address;
     string phone;
     int numberOfRentals;
+
+protected:
     string type ;
     int totalRentals;
     List<string> *itemList;
@@ -27,18 +29,18 @@ public:
 
 public:
 
-    // Setters
+    // Setters with arguments
     void setCustomer();
     void setId(const string &id);
     void setName(const string &name);
     void setAddress(const string &address);
     void setPhone(const string &phone);
 
+    //Set with input
     void setId();
     void setName();
     void setAddress();
     void setPhone();
-    void setTotalRentals(int totalRentals);
     void setType(const string &type);
     void setAll(const string &id,const string &name,const string &address,const string &phone);
 
@@ -58,7 +60,7 @@ public:
     virtual bool rentItems(int numOfBorrow);
 
     //return items
-    virtual bool turnItems();
+    virtual bool turnItems(string item);
 
     //print Customer
     void printCustomer();
@@ -76,24 +78,29 @@ public:
         itemList = new List<string>;
     }
 
-
+    //Rent an item but with restriction
     bool rentItems(int numOfBorrow) override ;
 };
-
 
 class VIP : public customer{
 private:
     int point ;
+    bool free_item = false;
+    bool use_free_item = false;
+
 public:
     VIP(){
         this -> type = "VIP";
+        point = 0;
     }
+    bool rentItems(int numOfBorrows) override ;
 };
 
 class Regular : public customer{
 public:
     Regular(){
         this -> type = "Regular";
+        this -> totalRentals = 0;
     }
 };
 

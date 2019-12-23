@@ -109,11 +109,6 @@ inline void customer::setAll(const string &id, const string &name, const string 
     this -> phone = phone;
 }
 
-inline void customer::setTotalRentals(int totalRentals) {
-    customer::totalRentals = totalRentals;
-}
-
-
 inline int customer::getTotalRentals() const {
     return totalRentals;
 }
@@ -151,7 +146,7 @@ inline void customer::upgrade(customer guest) {
     setName(guest.getName());
     setAddress(guest.getAddress());
     setPhone(guest.getPhone());
-    setTotalRentals(guest.getTotalRentals());
+    itemList = guest.getItemList();
 }
 
 //Rent books
@@ -160,10 +155,22 @@ inline bool customer::rentItems(int numOfBorrow) {
     return true;
 }
 
-inline bool customer::turnItems() {
-    numberOfRentals--;
-    totalRentals++;
-    return true;
+inline bool customer::turnItems(string itemReturn) {
+    //When there is no item in the borrow list
+    if (getItemList()->getSize() == 0)
+        return false;
+
+    //Run through loop to find the item in the item list
+    for (int i = 0; i < getItemList()->getSize(); ++i) {
+        if (itemReturn == getItemList()->get(i)){
+            numberOfRentals--;
+            totalRentals++;
+            return true;
+        } else{
+            cout << "No book was in the customer borrow" <<endl;
+            return false;
+        }
+    }
 }
 
 //Print customer
@@ -182,12 +189,32 @@ inline List<string> *customer::getItemList() const {
     return itemList;
 }
 
-
 inline bool Guest::rentItems(int numOfBorrow) {
     if ((numberOfRentals+numOfBorrow) > 2){
         return false;
     }
     numberOfRentals++;
+    return true;
+}
+
+bool VIP::rentItems(int numOfBorrow) {
+    //When the vip borrow item , point will be added
+    point = point + 10;
+
+    if(point > 100){
+        free_item = true;
+    }
+
+    //Condition if user can rent an iem for free and not use before
+    if (free_item && !use_free_item){
+        string s;
+        cout << "Customer can rent an item for free. Use ?\n1. Yes\n2.No";
+        getline(cin,s);
+        if (s == "1"){
+            use_free_item = true;
+        }
+    }
+
     return true;
 }
 
