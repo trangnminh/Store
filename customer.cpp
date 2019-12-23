@@ -157,12 +157,12 @@ inline void customer::upgrade(customer guest) {
 //Rent books
 inline bool customer::rentItems(int numOfBorrow) {
     numberOfRentals++;
-    totalRentals++;
     return true;
 }
 
 inline bool customer::turnItems() {
     numberOfRentals--;
+    totalRentals++;
     return true;
 }
 
@@ -171,6 +171,11 @@ inline void customer::printCustomer() {
     cout.precision(2);
     cout << this -> id << " ," << this -> name << " ," << this -> address << "," <<
     this -> phone << "," << this -> numberOfRentals << "," << this -> type <<endl;
+    if(getItemList()->getSize()!=0){
+        for (int i = 0; i < getItemList()->getSize(); ++i) {
+            cout << getItemList()->get(i)<<endl;
+        }
+    }
 }
 
 inline List<string> *customer::getItemList() const {
@@ -183,7 +188,6 @@ inline bool Guest::rentItems(int numOfBorrow) {
         return false;
     }
     numberOfRentals++;
-    totalRentals++;
     return true;
 }
 
