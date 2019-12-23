@@ -1,10 +1,15 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "Item.h"
 #include "List.h"
 #include "public.h"
 
 using namespace std;
+
+// File I/O functions
+bool loadItemsFromFile(const string& itemFileName, List<Item*> *itemList);
+void writeItemsToFile(const string& itemFileName, List<Item*> *itemList);
 
 // Item list management functions
 void printItems(List<Item*> itemList);
@@ -12,23 +17,102 @@ void addItem(List<Item*> *itemList);
 void editOrDeleteItem(List<Item*> *itemList);
 void printOutOfStockItems(List<Item*> itemList);
 void searchItems(List<Item*> itemList);
-bool isDuplicateItem(Item *item, List<Item*> *itemList);
+bool isDuplicateNewItem(Item *item, List<Item*> *itemList);
+bool isDuplicateEditedItem(Item *item, List<Item*> *itemList, int index);
 
 /* MAIN */
-int main() {
+int main(int argc, char *argv[]) {
+    string itemFile;
+
+    // Get input files from command line
+    if (argc == 3) {
+        itemFile = argv[2];
+    }
+    else {
+        cout << "Usage: start store.exe customer_file_name.txt item_file_name.txt" << endl;
+        return 1;
+    }
+
     // Create a list to store all items
     List<Item*> itemList;
 
-    addItem(&itemList);
-    addItem(&itemList);
+    // Load all items
+    loadItemsFromFile(itemFile, &itemList);
     printItems(itemList);
 
-    editOrDeleteItem(&itemList);
-    editOrDeleteItem(&itemList);
+    if (itemList.getSize() != 0)
+        cout << "Loaded " <<  itemList.getSize() << " entries above" << endl;
 
-    printItems(itemList);
+    // do your shit
+
+    // Write items to file before exit
+    writeItemsToFile(itemFile, &itemList);
 
     return 0;
+}
+
+/* FILE I/O */
+// Load items from file
+bool loadItemsFromFile(const string& itemFileName, List<Item*> *itemList) {
+    ifstream inFile;
+    inFile.open(itemFileName);
+    if (!inFile) {
+        cout << "Error: unable to open file " << itemFileName << endl;
+        return false;
+    }
+
+    // Get each line in text file and split it
+    string s;
+    while (getline(inFile, s)) {
+        string delim = ", ";
+
+        int i = 0;
+        string fields[7];
+
+        auto start = 0U;
+        auto end = s.find(delim);
+
+        // Split the line around ", "
+        while (end != string::npos) {
+            // Add the token to fields array
+            fields[i++] = s.substr(start, end - start);
+            // Set start and end for next token
+            start = end + delim.length();
+            end = s.find(delim, start);
+        }
+        // Get last token
+        fields[i++] = s.substr(start, end - start);
+
+        // Copy data to items and append items
+        if (fields[2] == "Record") {
+            Item *tmp = new Record(fields[0], fields[1], fields[3], fields[4], fields[5], fields[6]);
+            if (!isDuplicateNewItem(tmp, itemList))
+                itemList->append(tmp);
+        }
+        else if (fields[2] == "DVD") {
+            Item *tmp = new DVD(fields[0], fields[1], fields[3], fields[4], fields[5], fields[6]);
+            if (!isDuplicateNewItem(tmp, itemList))
+                itemList->append(tmp);
+        }
+        else {
+            Item *tmp = new Game(fields[0], fields[1], fields[3], fields[4], fields[5], fields[6]);
+            if (!isDuplicateNewItem(tmp, itemList))
+                itemList->append(tmp);
+        }
+    }
+    inFile.close();
+    return true;
+}
+
+// Save items to file
+void writeItemsToFile(const string& itemFileName, List<Item*> *itemList) {
+    ofstream outFile;
+    outFile.open(itemFileName);
+
+    for (int i = 0; i < itemList->getSize(); i++)
+        outFile << itemList->get(i)->itemToString() << endl;
+
+    outFile.close();
 }
 
 /* ITEM LIST FUNCTIONS */
@@ -44,7 +128,7 @@ void printItems(List<Item*> itemList) {
 // Add a new item to list
 void addItem(List<Item*> *itemList) {
     cout << "Enter an option:" << endl
-         << "1. Add a new Movie" << endl
+         << "1. Add a new Record" << endl
          << "2. Add a new DVD" << endl
          << "3. Add a new Game" << endl;
 
@@ -53,14 +137,14 @@ void addItem(List<Item*> *itemList) {
     Item *item = nullptr;
 
     switch (function) {
-        case 1: item = new Movie(); break;
+        case 1: item = new Record(); break;
         case 2: item = new DVD(); break;
         case 3: item = new Game(); break;
         default:;   // Do nothing
     }
 
     // If item is not duplicate, append to list
-    if (!isDuplicateItem(item, itemList)) {
+    if (!isDuplicateNewItem(item, itemList)) {
         itemList->append(item);
         cout << "Added: ";
         item->display();
@@ -98,9 +182,10 @@ void editOrDeleteItem(List<Item*> *itemList) {
 
                 if (function == 1) {
                     tmp->getEditFieldMenu();
-                    // If edited item is a duplicate, or have its ID unchanged, put back old id
-                    if (isDuplicateItem(tmp, itemList)) {
-                        cout << "ID not modified or is a duplicate, reverting to last unique ID.." << endl;
+
+                    // If edited item is a duplicate, put back old id
+                    if (isDuplicateEditedItem(tmp, itemList, i)) {
+                        cout << "New ID is a duplicate, reverting to old ID.." << endl;
                         tmp->setId(oldId);
                         cout << "Edited item: ";
                         tmp->display();
@@ -171,8 +256,8 @@ void searchItems(List<Item*> itemList) {
     }
 }
 
-// Check if an item is a duplicate
-bool isDuplicateItem(Item *item, List<Item*> *itemList) {
+// Check if a new item is a duplicate
+bool isDuplicateNewItem(Item *item, List<Item*> *itemList) {
     int listSize = itemList->getSize();
     if (listSize != 0) {
         for (int i = 0; i < listSize; i++) {
@@ -180,6 +265,23 @@ bool isDuplicateItem(Item *item, List<Item*> *itemList) {
             // Validate unique xxx in Ixxx-yyyy
             if (item->getId().substr(1, 3) == tmp->getId().substr(1, 3))
                 return true;
+        }
+        return false;
+    }
+    return false;
+}
+
+// Check if an item is a duplicate (skip itself)
+bool isDuplicateEditedItem(Item *item, List<Item*> *itemList, int index) {
+    int listSize = itemList->getSize();
+    if (listSize != 0) {
+        for (int i = 0; i < listSize; i++) {
+            if (i != index) {
+                Item *tmp = itemList->get(i);
+                // Validate unique xxx in Ixxx-yyyy
+                if (item->getId().substr(1, 3) == tmp->getId().substr(1, 3))
+                    return true;
+            }
         }
         return false;
     }

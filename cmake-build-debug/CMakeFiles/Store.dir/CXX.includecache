@@ -33,10 +33,22 @@ iostream
 -
 string
 -
+fstream
+-
 Item.h
 /home/minesk/CLionProjects/Store/Item.h
 List.h
 /home/minesk/CLionProjects/Store/List.h
+public.h
+/home/minesk/CLionProjects/Store/public.h
+
+/home/minesk/CLionProjects/Store/public.cpp
+iostream
+-
+string
+-
+Item.h
+/home/minesk/CLionProjects/Store/Item.h
 public.h
 /home/minesk/CLionProjects/Store/public.h
 

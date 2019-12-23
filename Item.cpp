@@ -153,7 +153,7 @@ void Item::editItem(int field) {
     }
 }
 
-void Movie::editItem(int field) {
+void Record::editItem(int field) {
     switch (field) {
         case 1: {
             setId();
@@ -256,7 +256,7 @@ void Item::getEditFieldMenu() {
     }
 }
 
-void Movie::getEditFieldMenu() {
+void Record::getEditFieldMenu() {
     while (true) {
         cout << "Enter an option:" << endl
              << "1. Edit ID" << endl
@@ -298,7 +298,7 @@ void Item::display() {
          << fixed << this->rentalFee << endl;
 }
 
-void Movie::display() {
+void Record::display() {
     cout.precision(2);
     cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
         << this->loanType << ", " << this->numOfCopies << ", "
