@@ -4,6 +4,7 @@
 
 using namespace std;
 
+<<<<<<< HEAD
 static LinkedList<Guest> *guestList;
 static LinkedList<Regular> *regularList;
 static LinkedList<VIP> *VIPList;
@@ -28,10 +29,22 @@ void displayGroupCustomer();
 bool isGuestListEmpty();
 bool isRegularListEmpty();
 bool isVIPListEmpty();
+=======
+static LinkedList<customer> *guestList;
+static LinkedList<customer> *regularList;
+static LinkedList<customer> *vipList;
+
+/* SUB-FUNCTIONS INITIALIZATION */
+void promoteCustomer(customer he );
+void rentBook(customer he);
+void printMenu();
+void doFunction(int choice);
+>>>>>>> 1d35cbc1a6f5bc6b886d81f6d3c9f540bee2bbd8
 
 //main
 int main() {
 //    Regular regular1;
+<<<<<<< HEAD
     guestList = new LinkedList<Guest>();
     regularList = new LinkedList<Regular>();
     VIPList = new LinkedList<VIP>();
@@ -295,17 +308,75 @@ void rentBook(){
 }
 
 void checkRentBook(customer *customer){
+=======
+    string choice;
+    do{
+        printMenu();
+        getline(cin,choice);
+        doFunction(stoi(choice));
+    }while (choice != "11");
+    return 0;
+}
+
+void doFunction(int choice){
+    switch(choice){
+        case 3:{
+            promoteCustomer(guestList->get(0));
+            break;
+        }
+        case 4:{
+            rentBook(guestList->get(0));
+            break;
+        }
+        case 5:{
+
+        }
+        default:
+            break;
+    }
+}
+void printMenu() {
+    cout <<"------------------------------" << endl
+         <<"Welcome to Genie's video store" << endl
+         << "Enter an option below" << endl
+         << "3. Promote an existing customer" << endl
+         << "4. Rent an item" << endl
+         << "5. Return an item" << endl
+         << "11. Exit" << endl;
+}
+
+void promoteCustomer(customer he ){
+    if (he.getTotalRentals() > 2 && he.getType() == "Guest"){
+        customer *regular = new Regular();
+        regular->upgrade(he);
+    }
+    if (he.getTotalRentals() > 3 && he.getType() == "Regular"){
+        customer *vip = new VIP();
+        vip -> upgrade(he);
+    }
+}
+
+void rentBook(customer he){
+>>>>>>> 1d35cbc1a6f5bc6b886d81f6d3c9f540bee2bbd8
     int borrowBooks = 0;
     while (true){
         string s;
         cout << "What book do you want to borrow ? ";
         getline(cin,s);
+<<<<<<< HEAD
         if (customer->rentItems(borrowBooks)){
             customer->getItemList()->append(s);
             cout << "Rent successfully. Continue? \n1.Yes\n2.No\nPlease choose: " ;
             borrowBooks++;
             int function = getFunction(3);
             if (function == 2)
+=======
+        if (he.rentBook(borrowBooks)){
+            cout << "Rent successfully. Continue? \n1.Yes\n2.No\nPlease choose: " ;
+            borrowBooks++;
+            getline(cin,s);
+            if (s=="2")
+>>>>>>> 1d35cbc1a6f5bc6b886d81f6d3c9f540bee2bbd8
                 break;
         }
         else{
@@ -313,6 +384,7 @@ void checkRentBook(customer *customer){
             break;
         }
     }
+<<<<<<< HEAD
 }
 
 void displayCustomer(){
@@ -387,4 +459,6 @@ bool isVIPListEmpty(){
         return true;
     }
     return false;
+=======
+>>>>>>> 1d35cbc1a6f5bc6b886d81f6d3c9f540bee2bbd8
 }

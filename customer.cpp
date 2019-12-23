@@ -4,12 +4,15 @@
 
 #include "customer.h"
 
+<<<<<<< HEAD
 inline void customer::setCustomer() {
     setId();
     setName();
     setAddress();
     setPhone();
 }
+=======
+>>>>>>> 1d35cbc1a6f5bc6b886d81f6d3c9f540bee2bbd8
 inline void customer::setId(const string &id) {
     this -> id = id;
 }
@@ -155,17 +158,26 @@ inline void customer::upgrade(customer guest) {
 }
 
 //Rent books
+<<<<<<< HEAD
 inline bool customer::rentItems(int numOfBorrow) {
+=======
+inline bool customer::rentBook(int numOfBorrow) {
+>>>>>>> 1d35cbc1a6f5bc6b886d81f6d3c9f540bee2bbd8
     numberOfRentals++;
     totalRentals++;
     return true;
 }
 
+<<<<<<< HEAD
 inline bool customer::turnItems() {
+=======
+inline bool customer::turnBook() {
+>>>>>>> 1d35cbc1a6f5bc6b886d81f6d3c9f540bee2bbd8
     numberOfRentals--;
     return true;
 }
 
+<<<<<<< HEAD
 //Print customer
 inline void customer::printCustomer() {
     cout.precision(2);
@@ -179,6 +191,9 @@ inline LinkedList<string> *customer::getItemList() const {
 
 
 inline bool Guest::rentItems(int numOfBorrow) {
+=======
+inline bool Guest::rentBook(int numOfBorrow) {
+>>>>>>> 1d35cbc1a6f5bc6b886d81f6d3c9f540bee2bbd8
     if ((numberOfRentals+numOfBorrow) > 2){
         return false;
     }
@@ -186,4 +201,7 @@ inline bool Guest::rentItems(int numOfBorrow) {
     totalRentals++;
     return true;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1d35cbc1a6f5bc6b886d81f6d3c9f540bee2bbd8
