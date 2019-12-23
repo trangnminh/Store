@@ -169,7 +169,7 @@ void promoteCustomer(){
         customer *getCustomer = customerList.get(i);
         if (id == getCustomer->getId().substr(1, 3)) {
             found = true;
-            if (getCustomer->getTotalRentals() > 3 && getCustomer->getType() == "Guest") {
+            if (getCustomer->getTotalRentals() > 2 && getCustomer->getType() == "Guest") {
                 customer *newRegular = new Regular();
                 newRegular->upgrade(*getCustomer);  //get information from the guest to the new regular
                 customerList.append(newRegular);
@@ -177,7 +177,7 @@ void promoteCustomer(){
                 qualifi = true;
                 break;
             }
-            if (getCustomer->getTotalRentals() > 3 && getCustomer->getType() == "Regular"){
+            if (getCustomer->getTotalRentals() > 2 && getCustomer->getType() == "Regular"){
                 VIP *newVip = new VIP();
                 newVip->upgrade(*getCustomer);
                 customerList.deleteNode(i);
@@ -251,10 +251,10 @@ void returnItem(){
 }
 
 void checkItemBorrowed(customer *customer) {
-    string itemReturn;
-    cout << "Please enter name of book"<<endl;
-    getline(cin, itemReturn);
     while (true) {
+        string itemReturn;
+        cout << "Please enter name of book"<<endl;
+        getline(cin, itemReturn);
         //get the validate of item return and item list
         if (customer->turnItems(itemReturn)) {
             cout << "Return successfully. ";

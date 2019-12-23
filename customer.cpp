@@ -165,6 +165,7 @@ inline bool customer::turnItems(string itemReturn) {
         if (itemReturn == getItemList()->get(i)){
             numberOfRentals--;
             totalRentals++;
+            getItemList()->deleteNode(i);
             return true;
         } else{
             cout << "No book was in the customer borrow" <<endl;
