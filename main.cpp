@@ -2,33 +2,36 @@
 #include <string>
 #include "Item.h"
 #include "List.h"
+#include "public.h"
 
 using namespace std;
 
-// Enums for different types of functions
-enum functionType{manageList, getItemType, editOrDelete};
-
-// Item functions
+// Item list management functions
 void printItems(List<Item*> itemList);
 void addItem(List<Item*> *itemList);
 void editOrDeleteItem(List<Item*> *itemList);
 void printOutOfStockItems(List<Item*> itemList);
 void searchItems(List<Item*> itemList);
-
-// Helpers
-int getFunction(functionType type);
 bool isDuplicateItem(Item *item, List<Item*> *itemList);
-bool isEditItem();
-string toLowerCase(string s);
 
 /* MAIN */
 int main() {
     // Create a list to store all items
     List<Item*> itemList;
 
+    addItem(&itemList);
+    addItem(&itemList);
+    printItems(itemList);
+
+    editOrDeleteItem(&itemList);
+    editOrDeleteItem(&itemList);
+
+    printItems(itemList);
+
     return 0;
 }
 
+/* ITEM LIST FUNCTIONS */
 // Print list of items
 void printItems(List<Item*> itemList) {
     if (itemList.getSize() != 0) {
@@ -61,6 +64,9 @@ void addItem(List<Item*> *itemList) {
         itemList->append(item);
         cout << "Added: ";
         item->display();
+
+        if (item->getNumOfCopies() > 0)
+            item->setAvailable();
     } else  {
         // Else, free memory
         cout << "Duplicate ID, item will not be added" << endl;
@@ -71,7 +77,7 @@ void addItem(List<Item*> *itemList) {
 // Update a current item
 void editOrDeleteItem(List<Item*> *itemList) {
     string id;
-    cout << "Enter the targeted item's ID: ";
+    cout << "Enter the targeted item's ID (xxx): ";
     getline(cin, id);
 
     int listSize = itemList->getSize();
@@ -81,25 +87,27 @@ void editOrDeleteItem(List<Item*> *itemList) {
     if (listSize != 0) {
         for (int i = 0; i < listSize; i++) {
             Item *tmp = itemList->get(i);
-            if (id == tmp->getId()) {
+            if (id == tmp->getId().substr(1, 3)) {
                 found = true;
                 string oldId = tmp->getId();
 
                 cout << "Selected item: ";
                 tmp->display();
 
-                if (isEditItem()) {
-                    tmp->setItem();
-                    // If edited item is a duplicate, put back old id
+                int function = getEditOrDeleteFunction();
+
+                if (function == 1) {
+                    tmp->getEditFieldMenu();
+                    // If edited item is a duplicate, or have its ID unchanged, put back old id
                     if (isDuplicateItem(tmp, itemList)) {
-                        cout << "Duplicate ID, reverting to old ID.." << endl;
+                        cout << "ID not modified or is a duplicate, reverting to last unique ID.." << endl;
                         tmp->setId(oldId);
+                        cout << "Edited item: ";
+                        tmp->display();
                     }
-                    cout << "Edited item: ";
-                    tmp->display();
                     break;
                 }
-                else {
+                else if (function == 2) {
                     // Delete current node
                     itemList->deleteNode(i);
                     cout << "Item deleted" << endl;
@@ -108,7 +116,7 @@ void editOrDeleteItem(List<Item*> *itemList) {
             }
         }
         if (!found)
-            cout << "Index not found" << endl;
+            cout << "ID not found" << endl;
     }
 }
 
@@ -163,39 +171,6 @@ void searchItems(List<Item*> itemList) {
     }
 }
 
-// Return user's desired function
-int getFunction(functionType type) {
-    const string listFunctions = "1 2 3";
-    const string itemTypeFunctions = "1 2 3";
-    const string editOrDeleteFunctions = "1 2";
-
-    string function;
-    getline(cin, function);
-
-    // Validate user input
-    while (true) {
-        // Check if input has space
-        size_t foundSpace = function.find_first_of(' ');
-        size_t foundFunction = 0;
-
-        if (type == manageList)  // Manage list
-            foundFunction = listFunctions.find(function);
-
-        if (type == getItemType) // Fetch a movie, dvd or game
-            foundFunction = itemTypeFunctions.find(function);
-
-        if (type == editOrDelete)  // Delete or update an item
-            foundFunction = editOrDeleteFunctions.find(function);
-
-        // Validate input
-        if (function.empty() || foundSpace != string::npos || foundFunction == string::npos) {
-            cout << "Error: function not found. Enter again: ";
-            getline(cin, function);
-        } else break;
-    }
-    return stoi(function);
-}
-
 // Check if an item is a duplicate
 bool isDuplicateItem(Item *item, List<Item*> *itemList) {
     int listSize = itemList->getSize();
@@ -209,23 +184,4 @@ bool isDuplicateItem(Item *item, List<Item*> *itemList) {
         return false;
     }
     return false;
-}
-
-// Let user edit or delete an item
-bool isEditItem() {
-    cout << "Enter an option:" << endl
-         << "1. Edit this item" << endl
-         << "2. Delete this item" << endl;
-
-    int function = getFunction(editOrDelete);
-    return function == 1;
-}
-
-// Convert a string to lowercase
-string toLowerCase(string s) {
-    for (char &c : s) {
-        if ('A' <= c && c <= 'Z')
-            c = tolower(c);
-    }
-    return s;
 }

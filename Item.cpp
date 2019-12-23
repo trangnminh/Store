@@ -1,4 +1,5 @@
 #include "Item.h"
+#include "public.h"
 
 void Item::setId() {
     cout << "Enter item's ID: ";
@@ -113,3 +114,203 @@ void Item::setGenre() {
         }
     }
 }
+
+// Edit item by single field
+void Item::editItem(int field) {
+    switch (field) {
+        case 1: {
+            setId();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 2: {
+            setTitle();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 3: {
+            setLoanType();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 4: {
+            setNumOfCopies();
+            cout << "Edited item: ";
+            display();
+            available = numOfCopies > 0;
+            break;
+        }
+        case 5: {
+            setRentalFee();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        default:;
+    }
+}
+
+void Movie::editItem(int field) {
+    switch (field) {
+        case 1: {
+            setId();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 2: {
+            setTitle();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 3: {
+            setLoanType();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 4: {
+            setNumOfCopies();
+            cout << "Edited item: ";
+            display();
+            available = numOfCopies > 0;
+            break;
+        }
+        case 5: {
+            setRentalFee();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 6: {
+            setGenre();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        default:;
+    }
+}
+
+void DVD::editItem(int field) {
+    switch (field) {
+        case 1: {
+            setId();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 2: {
+            setTitle();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 3: {
+            setLoanType();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 4: {
+            setNumOfCopies();
+            cout << "Edited item: ";
+            display();
+            available = numOfCopies > 0;
+            break;
+        }
+        case 5: {
+            setRentalFee();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 6: {
+            setGenre();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        default:;
+    }
+}
+
+// Helper to print edit menu
+void Item::getEditFieldMenu() {
+    while (true) {
+        cout << "Enter an option:" << endl
+             << "1. Edit ID" << endl
+             << "2. Edit title" << endl
+             << "3. Edit loan type" << endl
+             << "4. Edit number of copies" << endl
+             << "5. Edit rental fee" << endl
+             << "6. Quit editing" << endl;
+
+        int field = getFunction(getItemField);
+        if (field == 6) break;
+        editItem(field);
+    }
+}
+
+void Movie::getEditFieldMenu() {
+    while (true) {
+        cout << "Enter an option:" << endl
+             << "1. Edit ID" << endl
+             << "2. Edit title" << endl
+             << "3. Edit loan type" << endl
+             << "4. Edit number of copies" << endl
+             << "5. Edit rental fee" << endl
+             << "6. Edit genre" << endl
+             << "7. Quit editing" << endl;
+
+        int field = getFunction(getItemFieldWithGenre);
+        if (field == 7) break;
+        editItem(field);
+    }
+}
+
+void DVD::getEditFieldMenu() {
+    while (true) {
+        cout << "Enter an option:" << endl
+             << "1. Edit ID" << endl
+             << "2. Edit title" << endl
+             << "3. Edit loan type" << endl
+             << "4. Edit number of copies" << endl
+             << "5. Edit rental fee" << endl
+             << "6. Edit genre" << endl
+             << "7. Quit editing" << endl;
+
+        int field = getFunction(getItemFieldWithGenre);
+        if (field == 7) break;
+        editItem(field);
+    }
+}
+
+// Print Item's info
+void Item::display() {
+    cout.precision(2);
+    cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
+         << this->loanType << ", " << this->numOfCopies << ", "
+         << fixed << this->rentalFee << endl;
+}
+
+void Movie::display() {
+    cout.precision(2);
+    cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
+        << this->loanType << ", " << this->numOfCopies << ", "
+        << fixed << this->rentalFee << ", " << this->genre << endl;
+}
+
+void DVD::display() {
+    cout.precision(2);
+    cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
+         << this->loanType << ", " << this->numOfCopies << ", "
+         << fixed << this->rentalFee << ", " << this->genre << endl;
+}
+
+
+

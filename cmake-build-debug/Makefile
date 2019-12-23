@@ -177,6 +177,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+public.o: public.cpp.o
+
+.PHONY : public.o
+
+# target to build an object file
+public.cpp.o:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/public.cpp.o
+.PHONY : public.cpp.o
+
+public.i: public.cpp.i
+
+.PHONY : public.i
+
+# target to preprocess a source file
+public.cpp.i:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/public.cpp.i
+.PHONY : public.cpp.i
+
+public.s: public.cpp.s
+
+.PHONY : public.s
+
+# target to generate assembly for a file
+public.cpp.s:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/public.cpp.s
+.PHONY : public.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -192,6 +219,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... public.o"
+	@echo "... public.i"
+	@echo "... public.s"
 .PHONY : help
 
 

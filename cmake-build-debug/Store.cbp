@@ -96,6 +96,12 @@
 		<Unit filename="/home/minesk/CLionProjects/Store/main.cpp">
 			<Option target="Store"/>
 		</Unit>
+		<Unit filename="/home/minesk/CLionProjects/Store/public.cpp">
+			<Option target="Store"/>
+		</Unit>
+		<Unit filename="/home/minesk/CLionProjects/Store/public.h">
+			<Option target="Store"/>
+		</Unit>
 		<Unit filename="/home/minesk/CLionProjects/Store/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

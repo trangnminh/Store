@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include <string>
-#include <utility>
 #include "List.h"
+#include "public.h"
 
 using namespace std;
 
@@ -54,22 +54,13 @@ public:
         this->id = std::move(s);
     }
 
-    // General editor
-    virtual void setItem() {
-        setId();
-        setTitle();
-        setLoanType();
-        setNumOfCopies();
-        setRentalFee();
+    void setAvailable() {
+        this->available = true;
     }
 
-    // Print Item's info
-    virtual void display() {
-        cout.precision(2);
-        cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
-             << this->loanType << ", " << this->numOfCopies << ", "
-             << fixed << this->rentalFee << endl;
-    }
+    virtual void getEditFieldMenu();
+    virtual void editItem(int field);
+    virtual void display();
 };
 
 class Movie : public Item {
@@ -79,21 +70,9 @@ public:
         setGenre();
     }
 
-    void display() override {
-        cout.precision(2);
-        cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
-             << this->loanType << ", " << this->numOfCopies << ", "
-             << fixed << this->rentalFee << ", " << this->genre << endl;
-    }
-
-    void setItem() override {
-        setId();
-        setTitle();
-        setLoanType();
-        setNumOfCopies();
-        setRentalFee();
-        setGenre();
-    }
+    void getEditFieldMenu() override;
+    void editItem(int field) override;
+    void display() override;
 };
 
 class DVD : public Item {
@@ -103,21 +82,9 @@ public:
         setGenre();
     }
 
-    void display() override {
-        cout.precision(2);
-        cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
-             << this->loanType << ", " << this->numOfCopies << ", "
-             << fixed << this->rentalFee << ", " << this->genre << endl;
-    }
-
-    void setItem() override {
-        setId();
-        setTitle();
-        setLoanType();
-        setNumOfCopies();
-        setRentalFee();
-        setGenre();
-    }
+    void getEditFieldMenu() override;
+    void editItem(int field) override;
+    void display() override;
 };
 
 class Game : public Item {
