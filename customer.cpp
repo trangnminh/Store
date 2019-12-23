@@ -150,7 +150,7 @@ inline void customer::upgrade(customer guest) {
 }
 
 //Rent books
-inline bool customer::rentItems(int numOfBorrow) {
+inline bool customer::rentItems() {
     numberOfRentals++;
     return true;
 }
@@ -189,15 +189,16 @@ inline List<string> *customer::getItemList() const {
     return itemList;
 }
 
-inline bool Guest::rentItems(int numOfBorrow) {
-    if ((numberOfRentals+numOfBorrow) > 2){
+inline bool Guest::rentItems() {
+    //Once the number renting is more than 2 then false
+    if (getNumberOfRentals() > 1){
         return false;
     }
     numberOfRentals++;
     return true;
 }
 
-bool VIP::rentItems(int numOfBorrow) {
+inline bool VIP::rentItems() {
     //When the vip borrow item , point will be added
     point = point + 10;
 
@@ -214,7 +215,6 @@ bool VIP::rentItems(int numOfBorrow) {
             use_free_item = true;
         }
     }
-
     return true;
 }
 

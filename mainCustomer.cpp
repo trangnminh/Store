@@ -215,15 +215,13 @@ void rentItem(){
 }
 
 void checkRentBook(customer *customer){
-    int borrowBooks = 0;
     while (true){
         string s;
         cout << "What book do you want to borrow ? ";
         getline(cin,s);
-        if (customer->rentItems(borrowBooks)){
+        if (customer->rentItems()){
             customer->getItemList()->append(s);
             cout << "Rent successfully. Continue? \n1.Yes\n2.No\nPlease choose: " ;
-            borrowBooks++;
             int function = getFunction(3);
             if (function == 2)
                 break;
@@ -254,6 +252,7 @@ void returnItem(){
 
 void checkItemBorrowed(customer *customer) {
     string itemReturn;
+    cout << "Please enter name of book"<<endl;
     getline(cin, itemReturn);
     while (true) {
         //get the validate of item return and item list
