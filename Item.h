@@ -8,6 +8,7 @@
 
 using namespace std;
 
+// Item parent class
 class Item {
 protected:
     string id;
@@ -84,6 +85,7 @@ public:
     virtual void display();
 };
 
+// Record
 class Record : public Item {
 public:
     Record() : Item() {
@@ -98,12 +100,7 @@ public:
     }
 
     string itemToString() override {
-        string s = to_string(this->rentalFee);
-        size_t found = s.find(".");
-        s = s.substr(0, found + 3);
-
-        string ret = this->id + ", " + this->title + ", " + this->rentalType + ", " + this->loanType + ", " +
-                     to_string(this->numOfCopies) + ", " + s + ", " + this->genre;
+        string ret = Item::itemToString() + ", " + this->genre;
         return ret;
     }
 
@@ -112,6 +109,7 @@ public:
     void display() override;
 };
 
+// DVD
 class DVD : public Item {
 public:
     DVD() : Item() {
@@ -126,12 +124,7 @@ public:
     }
 
     string itemToString() override {
-        string s = to_string(this->rentalFee);
-        size_t found = s.find(".");
-        s = s.substr(0, found + 3);
-
-        string ret = this->id + ", " + this->title + ", " + this->rentalType + ", " + this->loanType + ", " +
-                     to_string(this->numOfCopies) + ", " + s + ", " + this->genre;
+        string ret = Item::itemToString() + ", " + this->genre;
         return ret;
     }
 
@@ -140,6 +133,7 @@ public:
     void display() override;
 };
 
+// Game
 class Game : public Item {
 public:
     Game() : Item() {

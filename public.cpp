@@ -72,3 +72,14 @@ string toLowerCase(string s) {
     return s;
 }
 
+string getNonEmptyInput() {
+    while (true) {
+        string s;
+        getline(cin, s);
+        if (!s.empty())
+            return s;
+        else
+            cout << "Empty input. Enter again: ";
+    }
+}
+

@@ -123,6 +123,33 @@ Store/fast:
 	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/build
 .PHONY : Store/fast
 
+Customer.o: Customer.cpp.o
+
+.PHONY : Customer.o
+
+# target to build an object file
+Customer.cpp.o:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/Customer.cpp.o
+.PHONY : Customer.cpp.o
+
+Customer.i: Customer.cpp.i
+
+.PHONY : Customer.i
+
+# target to preprocess a source file
+Customer.cpp.i:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/Customer.cpp.i
+.PHONY : Customer.cpp.i
+
+Customer.s: Customer.cpp.s
+
+.PHONY : Customer.s
+
+# target to generate assembly for a file
+Customer.cpp.s:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/Customer.cpp.s
+.PHONY : Customer.cpp.s
+
 Item.o: Item.cpp.o
 
 .PHONY : Item.o
@@ -213,6 +240,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Store"
 	@echo "... edit_cache"
+	@echo "... Customer.o"
+	@echo "... Customer.i"
+	@echo "... Customer.s"
 	@echo "... Item.o"
 	@echo "... Item.i"
 	@echo "... Item.s"

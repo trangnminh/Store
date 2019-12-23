@@ -84,6 +84,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/minesk/CLionProjects/Store/Customer.cpp">
+			<Option target="Store"/>
+		</Unit>
+		<Unit filename="/home/minesk/CLionProjects/Store/Customer.h">
+			<Option target="Store"/>
+		</Unit>
 		<Unit filename="/home/minesk/CLionProjects/Store/Item.cpp">
 			<Option target="Store"/>
 		</Unit>

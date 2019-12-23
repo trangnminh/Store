@@ -311,6 +311,3 @@ void DVD::display() {
          << this->loanType << ", " << this->numOfCopies << ", "
          << fixed << this->rentalFee << ", " << this->genre << endl;
 }
-
-
-

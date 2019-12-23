@@ -30,9 +30,6 @@ public:
 
     // Getters
     int getSize() {
-        if (size == 0) {
-            cout << "List is currently empty" << endl;
-        }
         return this->size;
     }
 

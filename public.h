@@ -22,4 +22,7 @@ int getEditOrDeleteFunction();
 // Convert a string to lowercase
 string toLowerCase(string s);
 
+// Get non-empty input as string
+string getNonEmptyInput();
+
 #endif //STORE_PUBLIC_H
