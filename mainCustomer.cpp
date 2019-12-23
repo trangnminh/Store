@@ -1,6 +1,6 @@
 #include <iostream>
 #include "customer.cpp"
-#include "List.h"
+#include "main.cpp"
 
 using namespace std;
 
@@ -26,8 +26,12 @@ void displayGroupCustomer();
 
 int getIdIndex();
 
+static List<Item*> *itemList;
+
 //main
 int main() {
+    itemList = new List<Item*>;
+    addItem(itemList); // Example to have a list to borrow in the main menu
 
     int function = 0;
     do{
@@ -190,19 +194,15 @@ void rentItem(){
     customer *getCustomer = customerList.get(id);
     while (true){
         string s;
-        cout << "What book do you want to borrow ? ";
+        cout << "Please enter item to borrow (name or id): ";
         getline(cin,s);
-        if (getCustomer->rentItems()){
-            getCustomer->getItemList()->append(s);
+        if (getCustomer->rentItems(s,itemList)){
             cout << "Rent successfully. Continue? \n1.Yes\n2.No\nPlease choose: " ;
             int function = getFunction(3);
             if (function == 2)
                 break;
-        }
-        else{
-            cout << "Number of rent book is 2" <<endl;
+        } else
             break;
-        }
     }
 }
 
@@ -213,14 +213,14 @@ void returnItem(){
     customer *getCustomer = customerList.get(id);
     while (true) {
         string itemReturn;
-        cout << "Please enter name of book"<<endl;
+        cout << "Please enter item to return (name or id)"<<endl;
         getline(cin, itemReturn);
         //get the validate of item return and item list
-        if (getCustomer->turnItems(itemReturn)) {
+        if (getCustomer->turnItems(itemReturn,itemList)) {
             cout << "Return successfully. ";
             //if no list , break
-            if (getCustomer->getItemList()->getSize() != 0) {
-                cout << "\n1. Yes\n2. No \nContinue? ";
+            if (getCustomer->getItemListOfCustomer()->getSize() != 0) {
+                cout << "Continue? \n1.Yes\n2.No\nPlease choose: ";
                 int function = getFunction(3);
                 if (function == 2) {
                     break;
@@ -258,7 +258,7 @@ void displayGroupCustomer(){
                 for (int i = 0; i < customerList.getSize(); ++i) {
                     if(customerList.get(i)->getType()=="Guest"){
                         customerList.get(i)->printCustomer();
-                        get++;
+                        get = true;
                     }
                 }
                 break;
@@ -268,7 +268,7 @@ void displayGroupCustomer(){
                 for (int i = 0; i < customerList.getSize(); ++i) {
                     if(customerList.get(i)->getType()=="Regular"){
                         customerList.get(i)->printCustomer();
-                        get++;
+                        get = true;
                     }
                 }
                 break;
@@ -278,7 +278,7 @@ void displayGroupCustomer(){
                 for (int i = 0; i < customerList.getSize(); ++i) {
                     if(customerList.get(i)->getType()=="VIP"){
                         customerList.get(i)->printCustomer();
-                        get++;
+                        get = true;
                     }
                 }
                 break;
@@ -286,8 +286,14 @@ void displayGroupCustomer(){
             default:
                 break;
         }
-    } else
+    }
+    else{
         cout << "No customer in the list" <<endl;
+        return;
+    }
+
+    if (!get)
+        cout << "No customer in the required list" <<endl;
 }
 
 int getIdIndex(){

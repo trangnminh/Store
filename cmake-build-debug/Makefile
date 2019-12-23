@@ -48,10 +48,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/tranmachsohan/Desktop/Store
+CMAKE_SOURCE_DIR = /Users/tranmachsohan/Desktop/EEET2482/customer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/tranmachsohan/Desktop/Store/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/tranmachsohan/Desktop/EEET2482/customer/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/tranmachsohan/Desktop/Store/cmake-build-debug/CMakeFiles /Users/tranmachsohan/Desktop/Store/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/tranmachsohan/Desktop/EEET2482/customer/cmake-build-debug/CMakeFiles /Users/tranmachsohan/Desktop/EEET2482/customer/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/tranmachsohan/Desktop/Store/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/tranmachsohan/Desktop/EEET2482/customer/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,71 +111,125 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Store
+# Target rules for targets named customer
 
 # Build rule for target.
-Store: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Store
-.PHONY : Store
+customer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 customer
+.PHONY : customer
 
 # fast build rule for target.
-Store/fast:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/build
-.PHONY : Store/fast
+customer/fast:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/build
+.PHONY : customer/fast
 
-item.o: item.cpp.o
+Item.o: Item.cpp.o
 
-.PHONY : item.o
-
-# target to build an object file
-item.cpp.o:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/item.cpp.o
-.PHONY : item.cpp.o
-
-item.i: item.cpp.i
-
-.PHONY : item.i
-
-# target to preprocess a source file
-item.cpp.i:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/item.cpp.i
-.PHONY : item.cpp.i
-
-item.s: item.cpp.s
-
-.PHONY : item.s
-
-# target to generate assembly for a file
-item.cpp.s:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/item.cpp.s
-.PHONY : item.cpp.s
-
-main.o: main.cpp.o
-
-.PHONY : main.o
+.PHONY : Item.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/main.cpp.o
-.PHONY : main.cpp.o
+Item.cpp.o:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/Item.cpp.o
+.PHONY : Item.cpp.o
 
-main.i: main.cpp.i
+Item.i: Item.cpp.i
 
-.PHONY : main.i
+.PHONY : Item.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/main.cpp.i
-.PHONY : main.cpp.i
+Item.cpp.i:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/Item.cpp.i
+.PHONY : Item.cpp.i
 
-main.s: main.cpp.s
+Item.s: Item.cpp.s
 
-.PHONY : main.s
+.PHONY : Item.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/main.cpp.s
-.PHONY : main.cpp.s
+Item.cpp.s:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/Item.cpp.s
+.PHONY : Item.cpp.s
+
+customer.o: customer.cpp.o
+
+.PHONY : customer.o
+
+# target to build an object file
+customer.cpp.o:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/customer.cpp.o
+.PHONY : customer.cpp.o
+
+customer.i: customer.cpp.i
+
+.PHONY : customer.i
+
+# target to preprocess a source file
+customer.cpp.i:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/customer.cpp.i
+.PHONY : customer.cpp.i
+
+customer.s: customer.cpp.s
+
+.PHONY : customer.s
+
+# target to generate assembly for a file
+customer.cpp.s:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/customer.cpp.s
+.PHONY : customer.cpp.s
+
+mainCustomer.o: mainCustomer.cpp.o
+
+.PHONY : mainCustomer.o
+
+# target to build an object file
+mainCustomer.cpp.o:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/mainCustomer.cpp.o
+.PHONY : mainCustomer.cpp.o
+
+mainCustomer.i: mainCustomer.cpp.i
+
+.PHONY : mainCustomer.i
+
+# target to preprocess a source file
+mainCustomer.cpp.i:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/mainCustomer.cpp.i
+.PHONY : mainCustomer.cpp.i
+
+mainCustomer.s: mainCustomer.cpp.s
+
+.PHONY : mainCustomer.s
+
+# target to generate assembly for a file
+mainCustomer.cpp.s:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/mainCustomer.cpp.s
+.PHONY : mainCustomer.cpp.s
+
+public.o: public.cpp.o
+
+.PHONY : public.o
+
+# target to build an object file
+public.cpp.o:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/public.cpp.o
+.PHONY : public.cpp.o
+
+public.i: public.cpp.i
+
+.PHONY : public.i
+
+# target to preprocess a source file
+public.cpp.i:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/public.cpp.i
+.PHONY : public.cpp.i
+
+public.s: public.cpp.s
+
+.PHONY : public.s
+
+# target to generate assembly for a file
+public.cpp.s:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/public.cpp.s
+.PHONY : public.cpp.s
 
 # Help Target
 help:
@@ -185,13 +239,19 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... Store"
-	@echo "... item.o"
-	@echo "... item.i"
-	@echo "... item.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... customer"
+	@echo "... Item.o"
+	@echo "... Item.i"
+	@echo "... Item.s"
+	@echo "... customer.o"
+	@echo "... customer.i"
+	@echo "... customer.s"
+	@echo "... mainCustomer.o"
+	@echo "... mainCustomer.i"
+	@echo "... mainCustomer.s"
+	@echo "... public.o"
+	@echo "... public.i"
+	@echo "... public.s"
 .PHONY : help
 
 

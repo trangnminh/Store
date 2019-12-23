@@ -1,29 +1,11 @@
-#include <iostream>
-#include <string>
+#include "Item.h"
+#include "public.h"
 
-#include "item.h"
-
-using namespace std;
-
-// Item setter
-void item::setItem() {
-    setId();
-    setTitle();
-    setLoanType();
-    setNumOfCopies();
-    setRentalFee();
+string Item::getId() {
+    return this->id;
 }
 
-// Print item's info
-void item::printItem() {
-    cout.precision(2);
-    cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
-         << this->loanType << ", " << this->numOfCopies << ", "
-         << fixed << this->rentalFee << ", " << this->genre << endl;
-}
-
-// Set item id
-void item::setId() {
+void Item::setId() {
     cout << "Enter item's ID: ";
     while (true) {
         string s;
@@ -48,8 +30,7 @@ void item::setId() {
     }
 }
 
-// Set item title
-void item::setTitle() {
+void Item::setTitle() {
     cout << "Enter item's title: ";
     while (true) {
         string s;
@@ -63,8 +44,7 @@ void item::setTitle() {
     }
 }
 
-// Set item loan type
-void item::setLoanType() {
+void Item::setLoanType() {
     cout << "Enter item's loan type: ";
     while (true) {
         string s;
@@ -82,7 +62,7 @@ void item::setLoanType() {
 }
 
 // Set number of copies
-void item::setNumOfCopies() {
+void Item::setNumOfCopies() {
     cout << "Enter item's number of copies: ";
     while (true) {
         string num;
@@ -98,7 +78,7 @@ void item::setNumOfCopies() {
 }
 
 // Set rental fee
-void item::setRentalFee() {
+void Item::setRentalFee() {
     cout << "Enter item's rental fee: ";
     while (true) {
         string fee;
@@ -123,8 +103,7 @@ void item::setRentalFee() {
     }
 }
 
-// Set genre
-void item::setGenre() {
+void Item::setGenre() {
     cout << "Enter item's genre: ";
     while (true) {
         string s;
@@ -133,11 +112,214 @@ void item::setGenre() {
         if (s == "Action" || s == "Horror" || s == "Drama" || s == "Comedy") {
             this->genre = s;
             break;
-        }
-        else {
+        } else {
             cout << "Error: invalid genre. Valid genres: Action, Horror, Drama, Comedy" << endl;
             cout << "Enter again: ";
         }
     }
 }
+
+// Edit item by single field
+void Item::editItem(int field) {
+    switch (field) {
+        case 1: {
+            setId();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 2: {
+            setTitle();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 3: {
+            setLoanType();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 4: {
+            setNumOfCopies();
+            cout << "Edited item: ";
+            display();
+            available = numOfCopies > 0;
+            break;
+        }
+        case 5: {
+            setRentalFee();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        default:;
+    }
+}
+
+void Record::editItem(int field) {
+    switch (field) {
+        case 1: {
+            setId();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 2: {
+            setTitle();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 3: {
+            setLoanType();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 4: {
+            setNumOfCopies();
+            cout << "Edited item: ";
+            display();
+            available = numOfCopies > 0;
+            break;
+        }
+        case 5: {
+            setRentalFee();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 6: {
+            setGenre();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        default:;
+    }
+}
+
+void DVD::editItem(int field) {
+    switch (field) {
+        case 1: {
+            setId();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 2: {
+            setTitle();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 3: {
+            setLoanType();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 4: {
+            setNumOfCopies();
+            cout << "Edited item: ";
+            display();
+            available = numOfCopies > 0;
+            break;
+        }
+        case 5: {
+            setRentalFee();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        case 6: {
+            setGenre();
+            cout << "Edited item: ";
+            display();
+            break;
+        }
+        default:;
+    }
+}
+
+// Helper to print edit menu
+void Item::getEditFieldMenu() {
+    while (true) {
+        cout << "Enter an option:" << endl
+             << "1. Edit ID" << endl
+             << "2. Edit title" << endl
+             << "3. Edit loan type" << endl
+             << "4. Edit number of copies" << endl
+             << "5. Edit rental fee" << endl
+             << "6. Quit editing" << endl;
+
+        int field = getFunction(getItemField);
+        if (field == 6) break;
+        editItem(field);
+    }
+}
+
+void Record::getEditFieldMenu() {
+    while (true) {
+        cout << "Enter an option:" << endl
+             << "1. Edit ID" << endl
+             << "2. Edit title" << endl
+             << "3. Edit loan type" << endl
+             << "4. Edit number of copies" << endl
+             << "5. Edit rental fee" << endl
+             << "6. Edit genre" << endl
+             << "7. Quit editing" << endl;
+
+        int field = getFunction(getItemFieldWithGenre);
+        if (field == 7) break;
+        editItem(field);
+    }
+}
+
+void DVD::getEditFieldMenu() {
+    while (true) {
+        cout << "Enter an option:" << endl
+             << "1. Edit ID" << endl
+             << "2. Edit title" << endl
+             << "3. Edit loan type" << endl
+             << "4. Edit number of copies" << endl
+             << "5. Edit rental fee" << endl
+             << "6. Edit genre" << endl
+             << "7. Quit editing" << endl;
+
+        int field = getFunction(getItemFieldWithGenre);
+        if (field == 7) break;
+        editItem(field);
+    }
+}
+
+bool Item::isAvailable() const {
+    return available;
+}
+
+// Print Item's info
+void Item::display() {
+    cout.precision(2);
+    cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
+         << this->loanType << ", " << this->numOfCopies << ", "
+         << fixed << this->rentalFee << endl;
+}
+
+
+void Record::display() {
+    cout.precision(2);
+    cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
+         << this->loanType << ", " << this->numOfCopies << ", "
+         << fixed << this->rentalFee << ", " << this->genre << endl;
+}
+
+void DVD::display() {
+    cout.precision(2);
+    cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
+         << this->loanType << ", " << this->numOfCopies << ", "
+         << fixed << this->rentalFee << ", " << this->genre << endl;
+}
+
+
 

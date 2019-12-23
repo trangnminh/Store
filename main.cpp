@@ -1,309 +1,289 @@
 #include <iostream>
 #include <string>
-
-#include "item.h"
-#include "LinkedList.h"
-#include "customer.h"
+#include <fstream>
+#include "Item.h"
+#include "List.h"
+#include "public.h"
 
 using namespace std;
 
-// Global lists
-static LinkedList<movie> *movieList;
-static LinkedList<dvd> *dvdList;
-static LinkedList<game> *gameList;
-static LinkedList<guest> *guestList;
-static LinkedList<guest> *regularList;
-static LinkedList<guest> *vipList;
+// File I/O functions
+bool loadItemsFromFile(const string& itemFileName, List<Item*> *itemList);
+void writeItemsToFile(const string& itemFileName, List<Item*> *itemList);
 
-/* SUB-FUNCTIONS INITIALIZATION */
-void printMenu();
-int getFunction(int type);
-void callFunction(int function);
+// Item list management functions
+void printItems(List<Item*> itemList);
+void addItem(List<Item*> *itemList);
+void editOrDeleteItem(List<Item*> *itemList);
+void printOutOfStockItems(List<Item*> itemList);
+void searchItems(List<Item*> itemList);
+bool isDuplicateNewItem(Item *item, List<Item*> *itemList);
+bool isDuplicateEditedItem(Item *item, List<Item*> *itemList, int index);
 
-void printListOfItems();
-void addItem();
-void updateOrDeleteItem();
+/* MAIN */
+//int main(int argc, char *argv[]) {
+//    string itemFile;
+//
+//    // Get input files from command line
+//    if (argc == 3) {
+//        itemFile = argv[2];
+//    }
+//    else {
+//        cout << "Usage: start store.exe customer_file_name.txt item_file_name.txt" << endl;
+//        return 1;
+//    }
+//
+//    // Create a list to store all items
+//    List<Item*> itemList;
+//
+//    // Load all items
+//    loadItemsFromFile(itemFile, &itemList);
+//    printItems(itemList);
+//
+//    if (itemList.getSize() != 0)
+//        cout << "Loaded " <<  itemList.getSize() << " entries above" << endl;
+//
+//    // do your shit
+//
+//    // Write items to file before exit
+//    writeItemsToFile(itemFile, &itemList);
+//
+//    return 0;
+//}
 
-bool isMovieListEmpty();
-bool isDVDListEmpty();
-bool isGameListEmpty();
-bool isEditItem();
-
-int main() {
-    // Create new lists
-    movieList = new LinkedList<movie>();
-    dvdList = new LinkedList<dvd>();
-    gameList = new LinkedList<game>();
-    guestList = new LinkedList<guest>();
-    regularList = new LinkedList<guest>();
-    vipList = new LinkedList<guest>();
-
-    int function = 0;
-    do {
-        printMenu();
-        function = getFunction(1);
-        callFunction(function);
-    } while (function != 11);
-
-    return 0;
-}
-
-// Print function menu
-void printMenu() {
-    cout <<"------------------------------" << endl
-         <<"Welcome to Genie's video store" << endl
-         << "Enter an option below" << endl
-         << "1. Print list of items" << endl
-         << "2. Add a new item" << endl
-         << "3. Update/delete a current item" << endl
-
-         << "11. Exit" << endl;
-}
-
-// Return user's desired function
-int getFunction(int type) {
-    const string managerFunctions = "1 2 3 11"; // will be added later
-    const string itemFunctions = "1 2 3";
-    const string editOrDeleteFunctions = "1 2";
-
-    string function;
-    getline(cin, function);
-
-    // Validate user input
-    while (true) {
-        // Check if input has space
-        size_t foundSpace = function.find_first_of(' ');
-        size_t foundFunction = 0;
-
-        // Check input against valid functions based on type
-        if (type == 1)  // Manage list
-            foundFunction = managerFunctions.find(function);
-        if (type == 2) // Access specific type of item
-            foundFunction = itemFunctions.find(function);
-        if (type == 3)  // Delete or update an item
-            foundFunction = editOrDeleteFunctions.find(function);
-
-        // Validate input
-        if (function.empty() || foundSpace != string::npos || foundFunction == string::npos) {
-            cout << "Error: function not found. Enter again: ";
-            getline(cin, function);
-        } else break;
+/* FILE I/O */
+// Load items from file
+bool loadItemsFromFile(const string& itemFileName, List<Item*> *itemList) {
+    ifstream inFile;
+    inFile.open(itemFileName);
+    if (!inFile) {
+        cout << "Error: unable to open file " << itemFileName << endl;
+        return false;
     }
-    return stoi(function);
+
+    // Get each line in text file and split it
+    string s;
+    while (getline(inFile, s)) {
+        string delim = ", ";
+
+        int i = 0;
+        string fields[7];
+
+        auto start = 0U;
+        auto end = s.find(delim);
+
+        // Split the line around ", "
+        while (end != string::npos) {
+            // Add the token to fields array
+            fields[i++] = s.substr(start, end - start);
+            // Set start and end for next token
+            start = end + delim.length();
+            end = s.find(delim, start);
+        }
+        // Get last token
+        fields[i++] = s.substr(start, end - start);
+
+        // Copy data to items and append items
+        if (fields[2] == "Record") {
+            Item *tmp = new Record(fields[0], fields[1], fields[3], fields[4], fields[5], fields[6]);
+            if (!isDuplicateNewItem(tmp, itemList))
+                itemList->append(tmp);
+        }
+        else if (fields[2] == "DVD") {
+            Item *tmp = new DVD(fields[0], fields[1], fields[3], fields[4], fields[5], fields[6]);
+            if (!isDuplicateNewItem(tmp, itemList))
+                itemList->append(tmp);
+        }
+        else {
+            Item *tmp = new Game(fields[0], fields[1], fields[3], fields[4], fields[5], fields[6]);
+            if (!isDuplicateNewItem(tmp, itemList))
+                itemList->append(tmp);
+        }
+    }
+    inFile.close();
+    return true;
 }
 
-// Call user's desired function
-void callFunction(int function) {
-    switch (function) {
-        case 1:
-            printListOfItems();
-            break;
-        case 2:
-            addItem();
-            break;
-        case 3:
-            updateOrDeleteItem();
-            break;
-        default:
-            cout << "Goodbye" << endl;
+// Save items to file
+void writeItemsToFile(const string& itemFileName, List<Item*> *itemList) {
+    ofstream outFile;
+    outFile.open(itemFileName);
+
+    for (int i = 0; i < itemList->getSize(); i++)
+        outFile << itemList->get(i)->itemToString() << endl;
+
+    outFile.close();
+}
+
+/* ITEM LIST FUNCTIONS */
+// Print list of items
+void printItems(List<Item*> itemList) {
+    if (itemList.getSize() != 0) {
+        for (int i = 0; i < itemList.getSize(); i++) {
+            itemList.get(i)->display();
+        }
     }
 }
 
-// Print list of items by type
-void printListOfItems() {
+// Add a new item to list
+void addItem(List<Item*> *itemList) {
     cout << "Enter an option:" << endl
-         << "1. Print list of movies" << endl
-         << "2. Print list of DVDs" << endl
-         << "3. Print list of games" << endl;
+         << "1. Add a new Record" << endl
+         << "2. Add a new DVD" << endl
+         << "3. Add a new Game" << endl;
 
-    int function = getFunction(2);
+    int function = getFunction(getItemType);
+
+    Item *item = nullptr;
 
     switch (function) {
-        case 1: {
-            if (!isMovieListEmpty()) {
-                for (int i = 0; i < movieList->size(); i++)
-                    movieList->get(i).printItem();
-            } break;
-        }
-        case 2: {
-            if (!isDVDListEmpty()) {
-                for (int i = 0; i < dvdList->size(); i++)
-                    dvdList->get(i).printItem();
-            } break;
-        }
-        case 3: {
-            if (!isGameListEmpty()) {
-                for (int i = 0; i < gameList->size(); i++)
-                    gameList->get(i).printItem();
-            } break;
-        }
-        default:;
+        case 1: item = new Record(); break;
+        case 2: item = new DVD(); break;
+        case 3: item = new Game(); break;
+        default:;   // Do nothing
     }
-}
 
-// Add new item
-void addItem() {
-    cout << "Enter an option:" << endl
-         << "1. Add new movie record" << endl
-         << "2. Add new DVD" << endl
-         << "3. Add new game" << endl;
+    // If item is not duplicate, append to list
+    if (!isDuplicateNewItem(item, itemList)) {
+        itemList->append(item);
+        cout << "Added: ";
+        item->display();
 
-    int function = getFunction(2);
-
-    switch (function) {
-        case 1: {
-            movie movie;
-            movie.setItem();
-            movie.setGenre();
-            movieList->append(movie);
-            break;
-        }
-        case 2: {
-            dvd dvd;
-            dvd.setItem();
-            dvd.setGenre();
-            dvdList->append(dvd);
-            break;
-        }
-        case 3: {
-            game game;
-            game.setItem();
-            gameList->append(game);
-            break;
-        }
-        default:; // do nothing
+        if (item->getNumOfCopies() > 0)
+            item->setAvailable();
+    } else  {
+        // Else, free memory
+        cout << "Duplicate ID, item will not be added" << endl;
+        delete item;
     }
 }
 
 // Update a current item
-void updateOrDeleteItem() {
-    cout << "Enter an option:" << endl
-         << "1. Update/delete a movie" << endl
-         << "2. Update/delete a DVD" << endl
-         << "3. Update/delete a game" << endl;
-
-    int function = getFunction(2);
-
+void editOrDeleteItem(List<Item*> *itemList) {
     string id;
-    cout << "Enter the targeted item's ID: ";
+    cout << "Enter the targeted item's ID (xxx): ";
     getline(cin, id);
 
-    switch (function) {
-        case 1: {
-            if (!isMovieListEmpty()) {
-                bool found = false;
-                for (int i = 0; i < movieList->size(); i++) {
-                    movie movie = movieList->get(i);
-                    if (movie.getId() == id) {
-                        found = true;
-                        cout << "Selected item: ";
-                        movie.printItem();
-                        if (isEditItem()) {
-                            movie.setItem();
-                            movie.setGenre();
-                            movieList->set(i, movie);
-                            cout << "Edited item: ";
-                            movie.printItem();
-                        } else
-                            movieList->remove(i);
-                        break;
+    int listSize = itemList->getSize();
+    bool found = false;
+
+    // If list is not empty, search for item
+    if (listSize != 0) {
+        for (int i = 0; i < listSize; i++) {
+            Item *tmp = itemList->get(i);
+            if (id == tmp->getId().substr(1, 3)) {
+                found = true;
+                string oldId = tmp->getId();
+
+                cout << "Selected item: ";
+                tmp->display();
+
+                int function = getEditOrDeleteFunction();
+
+                if (function == 1) {
+                    tmp->getEditFieldMenu();
+
+                    // If edited item is a duplicate, put back old id
+                    if (isDuplicateEditedItem(tmp, itemList, i)) {
+                        cout << "New ID is a duplicate, reverting to old ID.." << endl;
+                        tmp->setId(oldId);
+                        cout << "Edited item: ";
+                        tmp->display();
                     }
+                    break;
                 }
-                if (!found)
-                    cout << "Index not found" << endl;
-            } break;
-        }
-        case 2: {
-            if (!isDVDListEmpty()) {
-                bool found = false;
-                for (int i = 0; i < dvdList->size(); i++) {
-                    dvd dvd = dvdList->get(i);
-                    if (dvd.getId() == id) {
-                        found = true;
-                        cout << "Selected item: ";
-                        dvd.printItem();
-                        if (isEditItem()) {
-                            dvd.setItem();
-                            dvd.setGenre();
-                            dvdList->set(i, dvd);
-                            cout << "Edited item: ";
-                            dvd.printItem();
-                        } else
-                            dvdList->remove(i);
-                        break;
-                    }
+                else if (function == 2) {
+                    // Delete current node
+                    itemList->deleteNode(i);
+                    cout << "Item deleted" << endl;
+                    break;
                 }
-                if (!found)
-                    cout << "Index not found" << endl;
-            } break;
+            }
         }
-        case 3: {
-            if (!isGameListEmpty()) {
-                bool found = false;
-                for (int i = 0; i < gameList->size(); i++) {
-                    game game = gameList->get(i);
-                    if (game.getId() == id) {
-                        found = true;
-                        cout << "Selected item: ";
-                        game.printItem();
-                        if (isEditItem()) {
-                            game.setItem();
-                            gameList->set(i, game);
-                            cout << "Edited item: ";
-                            game.printItem();
-                        } else
-                            gameList->remove(i);
-                        break;
-                    }
-                }
-                if (!found)
-                    cout << "Index not found" << endl;
-            } break;
-        }
-        default:;
+        if (!found)
+            cout << "ID not found" << endl;
     }
 }
 
-// Helper
-bool isMovieListEmpty() {
-    if (movieList->size() == 0) {
-        cout << "Movie list is empty" << endl;
-        return true;
+// Print out of stock items
+void printOutOfStockItems(List<Item*> itemList) {
+    cout << "Printing out-of-stock items.." << endl;
+    int notStocked = 0;
+    if (itemList.getSize() != 0) {
+        for (int i = 0; i < itemList.getSize(); i++) {
+            Item *tmp = itemList.get(i);
+            if (tmp->getNumOfCopies() == 0) {
+                tmp->display();
+                notStocked++;
+            }
+        }
+    }
+    if (notStocked == 0) {
+        cout << "All items are stocked" << endl;
+    }
+}
+
+// Search all items containing a keyword in its ID or title
+void searchItems(List<Item*> itemList) {
+    cout << "Enter a keyword: ";
+    string keyword;
+    getline(cin, keyword);
+
+    if (keyword.empty()) {
+        cout << "Keyword is empty" << endl;
+        return;
+    }
+
+    // Start searching for matching title or id
+    cout << "Searching matched IDs or titles.." << endl;
+    int match = 0;
+
+    // Search is case insensitive
+    keyword = toLowerCase(keyword);
+
+    if (itemList.getSize() != 0) {
+        for (int i = 0; i < itemList.getSize(); i++) {
+            Item *tmp = itemList.get(i);
+            if (toLowerCase(tmp->getId()).find(keyword) != string::npos ||
+                toLowerCase(tmp->getTitle()).find(keyword) != string::npos) {
+                tmp->display();
+                match++;
+            }
+        }
+    }
+    if (match == 0) {
+        cout << "No result" << endl;
+    }
+}
+
+// Check if a new item is a duplicate
+bool isDuplicateNewItem(Item *item, List<Item*> *itemList) {
+    int listSize = itemList->getSize();
+    if (listSize != 0) {
+        for (int i = 0; i < listSize; i++) {
+            Item *tmp = itemList->get(i);
+            // Validate unique xxx in Ixxx-yyyy
+            if (item->getId().substr(1, 3) == tmp->getId().substr(1, 3))
+                return true;
+        }
+        return false;
     }
     return false;
 }
 
-bool isDVDListEmpty() {
-    if (dvdList->size() == 0) {
-        cout << "DVD list is empty" << endl;
-        return true;
+// Check if an item is a duplicate (skip itself)
+bool isDuplicateEditedItem(Item *item, List<Item*> *itemList, int index) {
+    int listSize = itemList->getSize();
+    if (listSize != 0) {
+        for (int i = 0; i < listSize; i++) {
+            if (i != index) {
+                Item *tmp = itemList->get(i);
+                // Validate unique xxx in Ixxx-yyyy
+                if (item->getId().substr(1, 3) == tmp->getId().substr(1, 3))
+                    return true;
+            }
+        }
+        return false;
     }
     return false;
 }
-
-bool isGameListEmpty() {
-    if (gameList->size() == 0) {
-        cout << "Game list is empty" << endl;
-        return true;
-    }
-    return false;
-}
-
-bool isEditItem() {
-    cout << "Enter an option:" << endl
-         << "1. Update this item" << endl
-         << "2. Delete this item" << endl;
-
-    int function = getFunction(3);
-    return function == 1;
-}
-
-//         << "2. Add new customer of update an existing customer" << endl
-//         << "3. Promote an existing customer" << endl
-//         << "4. Rent an item" << endl
-//         << "5. Return an item" << endl
-//         << "6. Display all items" << endl
-//         << "7. Display out-of-stock items" << endl
-//         << "8. Display all customers" << endl
-//         << "9. Display group of customers" << endl
-//         << "10. Search items or customers" << endl

@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 #include "List.h"
+#include "Item.h"
+
 using namespace std;
 
 class Guest;
@@ -21,7 +23,9 @@ protected:
 
 protected:
     string type ;
-    List<string> *itemList;
+    List<Item*> *itemListOfCustomer;
+public:
+    List<Item *> *getItemListOfCustomer() const;
 
 public:
 
@@ -50,16 +54,15 @@ public:
     const string &getPhone() const;
     int getNumberOfRentals() const;
     const string &getType() const;
-    List<string> *getItemList() const;
 
 //    void upgrade();
     void upgrade(customer guest);
 
     //rent items
-    virtual bool rentItems();
+    virtual bool rentItems(string itemRent,List<Item*> *itemList);
 
     //return items
-    virtual bool turnItems(string item);
+    bool turnItems(string itemReturn, List<Item*> *itemList);
 
     //print Customer
     void printCustomer();
@@ -73,11 +76,11 @@ public:
     Guest() {
         this -> type = "Guest";
         this -> numberOfRentals = 0;
-        itemList = new List<string>;
+        itemListOfCustomer = new List<Item*>;
     }
 
     //Rent an item but with restriction
-    bool rentItems() override ;
+    bool rentItems(string itemRent,List<Item*> *itemList) override ;
 };
 
 class VIP : public customer{
@@ -91,7 +94,7 @@ public:
         this -> type = "VIP";
         point = 0;
     }
-    bool rentItems() override ;
+    bool rentItems(string itemRent,List<Item*> *itemList) override ;
 };
 
 class Regular : public customer{

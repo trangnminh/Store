@@ -1,3 +1,3 @@
-/Users/tranmachsohan/Desktop/Store/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/tranmachsohan/Desktop/Store/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/tranmachsohan/Desktop/Store/cmake-build-debug/CMakeFiles/Store.dir
+/Users/tranmachsohan/Desktop/EEET2482/customer/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/tranmachsohan/Desktop/EEET2482/customer/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/tranmachsohan/Desktop/EEET2482/customer/cmake-build-debug/CMakeFiles/customer.dir

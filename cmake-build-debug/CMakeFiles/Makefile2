@@ -44,21 +44,21 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/tranmachsohan/Desktop/Store
+CMAKE_SOURCE_DIR = /Users/tranmachsohan/Desktop/EEET2482/customer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/tranmachsohan/Desktop/Store/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/tranmachsohan/Desktop/EEET2482/customer/cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/Store.dir/all
+all: CMakeFiles/customer.dir/all
 
 .PHONY : all
 
 # The main recursive "clean" target.
-clean: CMakeFiles/Store.dir/clean
+clean: CMakeFiles/customer.dir/clean
 
 .PHONY : clean
 
@@ -68,31 +68,31 @@ preinstall:
 .PHONY : preinstall
 
 #=============================================================================
-# Target rules for target CMakeFiles/Store.dir
+# Target rules for target CMakeFiles/customer.dir
 
 # All Build rule for target.
-CMakeFiles/Store.dir/all:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/depend
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/tranmachsohan/Desktop/Store/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target Store"
-.PHONY : CMakeFiles/Store.dir/all
+CMakeFiles/customer.dir/all:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/depend
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/tranmachsohan/Desktop/EEET2482/customer/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5 "Built target customer"
+.PHONY : CMakeFiles/customer.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Store.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/tranmachsohan/Desktop/Store/cmake-build-debug/CMakeFiles 3
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Store.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/tranmachsohan/Desktop/Store/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/Store.dir/rule
+CMakeFiles/customer.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/tranmachsohan/Desktop/EEET2482/customer/cmake-build-debug/CMakeFiles 5
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/customer.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/tranmachsohan/Desktop/EEET2482/customer/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/customer.dir/rule
 
 # Convenience name for target.
-Store: CMakeFiles/Store.dir/rule
+customer: CMakeFiles/customer.dir/rule
 
-.PHONY : Store
+.PHONY : customer
 
 # clean rule for target.
-CMakeFiles/Store.dir/clean:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/clean
-.PHONY : CMakeFiles/Store.dir/clean
+CMakeFiles/customer.dir/clean:
+	$(MAKE) -f CMakeFiles/customer.dir/build.make CMakeFiles/customer.dir/clean
+.PHONY : CMakeFiles/customer.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
