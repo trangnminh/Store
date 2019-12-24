@@ -1,6 +1,5 @@
 /*
  * TO-DO:
- * - (optional) sort
  * - rebuild UI
  * - set while loop for program
  * - print group info
@@ -28,6 +27,9 @@ void returnItem(List<Item*> *itemList, List<Customer*> *customerList);
 // Template functions
 template <typename T>
 void printList(List<T*> list);
+
+template <typename T>
+void printSorted(List<T*> *list);
 
 template <typename T>
 void editOrDeleteObject(List<T*> *list);
@@ -80,6 +82,23 @@ int main(int argc, char *argv[]) {
     List<Customer*> customerList;
     loadItemsFromFile(itemFile, &itemList);
     loadCustomersFromFile(customerFile, &customerList);
+
+    printSorted(&itemList);
+    printSorted(&customerList);
+
+//    printList(itemList);
+//    cout << endl;
+//    foo(&itemList, 2);
+//    cout << endl;
+//    printList(itemList);
+//    cout << endl;
+
+//    printList(customerList);
+//    cout << endl;
+//    foo(&customerList, 2);
+//    cout << endl;
+//    printList(customerList);
+//    cout << endl;
 
     // do stuff
     //rentItem(&itemList, &customerList);
@@ -172,7 +191,7 @@ void printCustomersByLevel(List<Customer*> customerList) {
                 for (int i = 0; i < customerList.getSize(); i++) {
                     Customer *tmp = customerList.get(i);
                     if (tmp->getLevel() == "Guest")
-                        cout << tmp->getCustomerToString() << endl;
+                        cout << tmp->getObjectString() << endl;
                 }
                 break;
             }
@@ -180,7 +199,7 @@ void printCustomersByLevel(List<Customer*> customerList) {
                 for (int i = 0; i < customerList.getSize(); i++) {
                     Customer *tmp = customerList.get(i);
                     if (tmp->getLevel() == "Regular")
-                        cout << tmp->getCustomerToString() << endl;
+                        cout << tmp->getObjectString() << endl;
                 }
                 break;
             }
@@ -188,7 +207,7 @@ void printCustomersByLevel(List<Customer*> customerList) {
                 for (int i = 0; i < customerList.getSize(); i++) {
                     Customer *tmp = customerList.get(i);
                     if (tmp->getLevel() == "VIP")
-                        cout << tmp->getCustomerToString() << endl;
+                        cout << tmp->getObjectString() << endl;
                 }
                 break;
             }
@@ -205,14 +224,14 @@ void rentItem(List<Item*> *itemList, List<Customer*> *customerList) {
     auto *item = findObject<Item>(itemList);
 
     if (item != nullptr)
-        cout << "Item to rent: " << item->getItemToString() << endl;
+        cout << "Item to rent: " << item->getObjectString() << endl;
     else return;
 
     cout << "Enter a customer ID (xxx): ";
     auto *customer = findObject<Customer>(customerList);
 
     if (customer != nullptr) {
-        cout << "Customer: " << customer->getCustomerToString() << endl;
+        cout << "Customer: " << customer->getObjectString() << endl;
     }
     else return;
 
@@ -258,14 +277,14 @@ void returnItem(List<Item*> *itemList, List<Customer*> *customerList) {
     auto *item = findObject<Item>(itemList);
 
     if (item != nullptr)
-        cout << "Item to return: " << item->getItemToString() << endl;
+        cout << "Item to return: " << item->getObjectString() << endl;
     else return;
 
     cout << "Enter a customer ID (xxx): ";
     auto *customer = findObject<Customer>(customerList);
 
     if (customer != nullptr) {
-        cout << "Customer: " << customer->getCustomerToString() << endl;
+        cout << "Customer: " << customer->getObjectString() << endl;
     }
     else return;
 
@@ -299,6 +318,7 @@ void returnItem(List<Item*> *itemList, List<Customer*> *customerList) {
 }
 
 /* TEMPLATES */
+// Print directly from list with all information
 template <typename T>
 void printList(List<T*> list) {
     if (list.getSize() > 0) {
@@ -306,6 +326,72 @@ void printList(List<T*> list) {
             list.get(i)->display();
         }
     } else
+        cout << "List is empty" << endl;
+}
+
+// Print a copied array of only object strings, won't modify list or save to file
+template <typename T>
+void printSorted(List<T*> *list) {
+    cout << "Enter an option:" << endl
+         << "1. Print list by ID" << endl
+         << "2. Print list by title" << endl;
+
+    int type = getFunction(itemOrCustomer);
+
+    int listSize = list->getSize();
+    string results[listSize];
+
+    // Copy list of object strings
+    for (int i = 0; i < listSize; i++) {
+        results[i] = list->get(i)->getObjectString();
+    }
+
+    if (listSize >= 2) {
+        // Sort results
+        bool swapped = false;
+        bool compare = false;
+
+        for (int i = 0; i < listSize; i++) {
+            for (int j = 0; j < listSize - 1; j++) {
+                string s1 = results[j];
+                string s2 = results[j + 1];
+
+                switch (type) {
+                    case 1: {   // Sort by ID
+                        compare = s1.substr(1, 3).compare(s2.substr(1, 3)) > 0;
+                        break;
+                    }
+                    case 2: {   // Sort by title
+                        size_t start = s1.find(',');
+                        size_t end = s1.find(',', start + 1);
+                        string title1 = s1.substr(start + 2, end - start - 2);
+
+                        start = s2.find(',');
+                        end = s2.find(',', start + 1);
+                        string title2 = s2.substr(start + 2, end - start - 2);
+
+                        compare = title1.compare(title2) > 0;
+                        break;
+                    }
+                    default:;
+                }
+
+                if (compare) {
+                    results[j].swap(results[j + 1]);
+                    swapped = true;
+                }
+            }
+            if (!swapped) break;
+        }
+    }
+
+    // Print copied list
+    if (listSize > 0) {
+        for (int i = 0; i < listSize; i++) {
+            cout << results[i] << endl;
+        }
+    }
+    else
         cout << "List is empty" << endl;
 }
 
@@ -522,7 +608,7 @@ void writeItemsToFile(const string& itemFileName, List<Item*> *itemList) {
         cout << "Item list is empty" << endl;
 
     else for (int i = 0; i < size; i++)
-            outFile << itemList->get(i)->getItemToString() << endl;
+            outFile << itemList->get(i)->getObjectString() << endl;
 
     outFile.close();
 }
@@ -610,7 +696,7 @@ void writeCustomersToFile(const string& customerFileName, List<Customer*> *custo
     else for (int i = 0; i < size; i++) {
             Customer *tmp = customerList->get(i);
             // Print customer info
-            outFile << tmp->getCustomerToString() << endl;
+            outFile << tmp->getObjectString() << endl;
             // Print list of rentals
             for (int j = 0; j < tmp->getListOfRentals()->getSize(); j++) {
                 outFile << tmp->getListOfRentals()->get(j) << endl;

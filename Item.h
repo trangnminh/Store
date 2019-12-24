@@ -66,7 +66,7 @@ public:
     }
 
     // Return item string for File I/O
-    virtual string getItemToString() {
+    virtual string getObjectString() {
         string s = to_string(this->rentalFee);
         size_t found = s.find(".");
         // Workaround for setprecision(2) due to lack of <iomanip>
@@ -126,8 +126,8 @@ public:
         this->genre = genre;
     }
 
-    string getItemToString() override {
-        string ret = Item::getItemToString() + ", " + this->genre;
+    string getObjectString() override {
+        string ret = Item::getObjectString() + ", " + this->genre;
         return ret;
     }
 };
@@ -146,8 +146,8 @@ public:
         this->genre = genre;
     }
 
-    string getItemToString() override {
-        string ret = Item::getItemToString() + ", " + this->genre;
+    string getObjectString() override {
+        string ret = Item::getObjectString() + ", " + this->genre;
         return ret;
     }
 };

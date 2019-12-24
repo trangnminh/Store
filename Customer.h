@@ -54,6 +54,7 @@ public:
         return this->id;
     }
 
+    // getName(), renamed to match Item (template use)
     string getTitle() {
         return this->name;
     }
@@ -99,7 +100,7 @@ public:
 
     // Print
     void display() {
-        cout << getCustomerToString() << endl;
+        cout << getObjectString() << endl;
 
         // Print list of rentals
         for (int i = 0; i < this->getListOfRentals()->getSize(); i++) {
@@ -107,7 +108,7 @@ public:
         }
     }
 
-    virtual string getCustomerToString();
+    virtual string getObjectString();
 
     // Edit customer
     void editCustomer(int field);
@@ -154,7 +155,7 @@ public:
         this->level = "VIP";
     }
 
-    string getCustomerToString() override {
+    string getObjectString() override {
         string ret = id + ", " + name + ", " + address + ", " + phone + ", " + to_string(numOfPastRentals)
                 + ", " + level + ", " + to_string(points);
         return ret;

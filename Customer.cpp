@@ -68,11 +68,12 @@ void Customer::editCustomer(int field) {
         }
         default:;
     }
-    cout << "Edited customer: " << getCustomerToString() << endl;
+    cout << "Edited customer: " << getObjectString() << endl;
 }
 
-string Customer::getCustomerToString() {
-    string ret = id + ", " + name + ", " + address + ", " + phone + ", " + to_string(numOfPastRentals) + ", " + level;
+string Customer::getObjectString() {
+    string ret = id + ", " + name + ", " + address + ", " + phone + ", "
+            + to_string(numOfPastRentals) + ", " + level;
     return ret;
 };
 
