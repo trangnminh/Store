@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include "Item.h"
 #include "List.h"
 #include "public.h"
 
@@ -14,27 +15,34 @@ protected:
     string name;
     string address;
     string phone;
-    int numOfRentals;
+    int numOfPastRentals;
     string level;
-    List<string> *listOfRentals;    // List of rented IDs
+    List<string> *listOfRentals;    // List of currently rented IDs
+
+    int points; // VIP only
+    bool canRentFree = false;
+
 public:
     Customer() {
         setId();
         setName();
         setAddress();
         setPhone();
-
-        numOfRentals = 0;
+        numOfPastRentals = 0;
         listOfRentals = new List<string>();
+        points = 0;
     }
 
-    Customer(string id, string name, string address, string phone, const string& numOfRentals) {
-        this->id = std::move(id);
-        this->name = std::move(name);
-        this->address = std::move(address);
-        this->phone = std::move(phone);
-        this->numOfRentals = stoi(numOfRentals);
-        listOfRentals = new List<string>();
+    // Constructor for loading new
+    Customer(string id, string name, string address, string phone, const string& numOfPastRentals, const string& points) {
+        this->id = id;
+        this->name = name;
+        this->address = address;
+        this->phone = phone;
+        this->numOfPastRentals = stoi(numOfPastRentals);
+        this->listOfRentals = new List<string>();
+
+        this->points = stoi(points);
     }
 
     virtual ~Customer() {
@@ -46,12 +54,24 @@ public:
         return this->id;
     }
 
-    List<string>* getListOfRentals() {
-        return this->listOfRentals;
-    }
-
     string getTitle() {
         return this->name;
+    }
+
+    string getAddress() {
+        return this->address;
+    }
+
+    string getPhone() {
+        return this->phone;
+    }
+
+    int getNumOfPastRentals() {
+        return this->numOfPastRentals;
+    }
+
+    List<string>* getListOfRentals() {
+        return this->listOfRentals;
     }
 
     string getLevel() {
@@ -68,16 +88,28 @@ public:
         this->id = std::move(oldId);
     }
 
+    // Rent and return-related functions
+    void promote();
+    void rent();
+    int getPoints();
+
+    void returnItem() {
+        this->numOfPastRentals++;
+    }
+
     // Print
     void display() {
-        cout << customerToString() << endl;
+        cout << getCustomerToString() << endl;
+
+        // Print list of rentals
+        for (int i = 0; i < this->getListOfRentals()->getSize(); i++) {
+            cout << this->getListOfRentals()->get(i) << endl;
+        }
     }
 
-    string customerToString() {
-        string ret = id + ", " + name + ", " + address + ", " + phone + ", " + to_string(numOfRentals) + ", " + level;
-        return ret;
-    }
+    virtual string getCustomerToString();
 
+    // Edit customer
     void editCustomer(int field);
     void getEditFieldMenu();
 };
@@ -88,10 +120,11 @@ public:
         level = "Guest";
     }
 
-    // Constructor with predefined fields
-    Guest(string id, string name, string address, string phone, const string& numOfRentals) :
-    Customer(std::move(id), std::move(name), std::move(address), std::move(phone), numOfRentals) {
+    // Constructor for loading
+    Guest(string id, string name, string address, string phone, const string& numOfPastRentals, const string& points) :
+    Customer(id, name, address, phone, numOfPastRentals, points) {
         this->level = "Guest";
+        this->points = 0;
     }
 };
 
@@ -101,28 +134,31 @@ public:
         level = "Regular";
     }
 
-    // Constructor with predefined fields
-    Regular(string id, string name, string address, string phone, const string& numOfRentals) :
-    Customer(std::move(id), std::move(name), std::move(address), std::move(phone), numOfRentals) {
+    // For loading
+    Regular(string id, string name, string address, string phone, const string& numOfPastRentals, const string& points) :
+    Customer(id, name, address, phone, numOfPastRentals, points) {
         this->level = "Regular";
+        this->points = 0;
     }
 };
 
 class VIP : public Customer {
-private:
-    int points;
 public:
     VIP() : Customer() {
-        points = 0;
         level = "VIP";
     }
 
-    // Constructor with predefined fields
-    VIP(string id, string name, string address, string phone, const string& numOfRentals) :
-    Customer(std::move(id), std::move(name), std::move(address), std::move(phone), numOfRentals) {
+    // For loading
+    VIP(string id, string name, string address, string phone, const string& numOfPastRentals, const string& points) :
+    Customer(id, name, address, phone, numOfPastRentals, points) {
         this->level = "VIP";
-        this->points = 0;
     }
+
+    string getCustomerToString() override {
+        string ret = id + ", " + name + ", " + address + ", " + phone + ", " + to_string(numOfPastRentals)
+                + ", " + level + ", " + to_string(points);
+        return ret;
+    };
 };
 
 #endif //STORE_CUSTOMER_H

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include "Item.h"
+#include "Customer.h"
 #include "List.h"
 
 using namespace std;

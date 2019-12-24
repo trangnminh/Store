@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include "Customer.h"
 #include "List.h"
 #include "public.h"
 
@@ -48,12 +49,24 @@ public:
         return this->title;
     }
 
+    string getLoanType() {
+        return this->loanType;
+    }
+
     int getNumOfCopies() {
         return this->numOfCopies;
     }
 
+    double getRentalFee() {
+        return this->rentalFee;
+    }
+
+    bool getAvailable() {
+        return this->available;
+    }
+
     // Return item string for File I/O
-    virtual string itemToString() {
+    virtual string getItemToString() {
         string s = to_string(this->rentalFee);
         size_t found = s.find(".");
         // Workaround for setprecision(2) due to lack of <iomanip>
@@ -86,6 +99,17 @@ public:
 
     // Print
     void display();
+
+    // Rent and return
+    void getRented() {
+        this->numOfCopies--;
+        this->available = numOfCopies > 0;
+    }
+
+    void getReturned() {
+        this->numOfCopies++;
+        this->available = numOfCopies > 0;
+    }
 };
 
 // Record
@@ -102,8 +126,8 @@ public:
         this->genre = genre;
     }
 
-    string itemToString() override {
-        string ret = Item::itemToString() + ", " + this->genre;
+    string getItemToString() override {
+        string ret = Item::getItemToString() + ", " + this->genre;
         return ret;
     }
 };
@@ -122,8 +146,8 @@ public:
         this->genre = genre;
     }
 
-    string itemToString() override {
-        string ret = Item::itemToString() + ", " + this->genre;
+    string getItemToString() override {
+        string ret = Item::getItemToString() + ", " + this->genre;
         return ret;
     }
 };

@@ -1,8 +1,5 @@
 /*
  * TO-DO:
- * - rent
- * - return
- * - promote
  * - (optional) sort
  * - rebuild UI
  * - set while loop for program
@@ -25,6 +22,9 @@ void printOutOfStockItems(List<Item*> itemList);
 void addCustomer(List<Customer*> *customerList);
 void printCustomersByLevel(List<Customer*> customerList);
 
+void rentItem(List<Item*> *itemList, List<Customer*> *customerList);
+void returnItem(List<Item*> *itemList, List<Customer*> *customerList);
+
 // Template functions
 template <typename T>
 void printList(List<T*> list);
@@ -41,6 +41,9 @@ bool isDuplicateNewObject(T *t, List<T *> *list);
 template <typename T>
 bool isDuplicateEditedObject(T *t, List<T*> *list, int index);
 
+template <typename T>
+T* findObject(List<T*> *list);
+
 // File I/O functions
 bool loadItemsFromFile(const string& itemFileName, List<Item*> *itemList);
 void writeItemsToFile(const string& itemFileName, List<Item*> *itemList);
@@ -54,7 +57,7 @@ bool checkArgc(int argc) {
     else {
         cout << "Usage: start store.exe customer_file_name.txt item_file_name.txt" << endl
         << "* NOTE: display format is as follows:" << endl
-        << "* Item: Ixxx-yyyy, title, rentalType, loanType, numOfCopies, rentalFee (, genre)" << endl
+        << "* Item: Ixxx-yyyy, title, rentalType, loanType, numOfCopies, rentalFee, genre (if non-Game)" << endl
         << "* Customer: Cxxx, name, address, phone, numOfRentals, level" << endl
         << "* (list of rented IDs)" << endl;
         return false;
@@ -77,6 +80,10 @@ int main(int argc, char *argv[]) {
     List<Customer*> customerList;
     loadItemsFromFile(itemFile, &itemList);
     loadCustomersFromFile(customerFile, &customerList);
+
+    // do stuff
+    //rentItem(&itemList, &customerList);
+    //rentItem(&itemList, &customerList);
 
     // Write to file before exit
     writeItemsToFile(itemFile, &itemList);
@@ -103,7 +110,7 @@ void addItem(List<Item*> *itemList) {
     }
 
     // If item is not duplicate, append to list
-    if (!isDuplicateNewObject(item, itemList)) {
+    if (!isDuplicateNewObject<Item>(item, itemList)) {
         itemList->append(item);
         cout << "Added: ";
         item->display();
@@ -120,7 +127,7 @@ void addItem(List<Item*> *itemList) {
 void printOutOfStockItems(List<Item*> itemList) {
     cout << "Printing out-of-stock items.." << endl;
     int notStocked = 0;
-    if (itemList.getSize() != 0) {
+    if (itemList.getSize() > 0) {
         for (int i = 0; i < itemList.getSize(); i++) {
             Item *tmp = itemList.get(i);
             if (tmp->getNumOfCopies() == 0) {
@@ -139,7 +146,7 @@ void printOutOfStockItems(List<Item*> itemList) {
 
 void addCustomer(List<Customer*> *customerList) {
     Customer *customer = new Guest();
-    if (!isDuplicateNewObject(customer, customerList)) {
+    if (!isDuplicateNewObject<Customer>(customer, customerList)) {
         customerList->append(customer);
         cout << "Added: ";
         customer->display();
@@ -159,13 +166,13 @@ void printCustomersByLevel(List<Customer*> customerList) {
     int function = getFunction(customerLevels);
 
     int listSize = customerList.getSize();
-    if (listSize != 0) {
+    if (listSize > 0) {
         switch (function) {
             case 1: {
                 for (int i = 0; i < customerList.getSize(); i++) {
                     Customer *tmp = customerList.get(i);
                     if (tmp->getLevel() == "Guest")
-                        tmp->display();
+                        cout << tmp->getCustomerToString() << endl;
                 }
                 break;
             }
@@ -173,7 +180,7 @@ void printCustomersByLevel(List<Customer*> customerList) {
                 for (int i = 0; i < customerList.getSize(); i++) {
                     Customer *tmp = customerList.get(i);
                     if (tmp->getLevel() == "Regular")
-                        tmp->display();
+                        cout << tmp->getCustomerToString() << endl;
                 }
                 break;
             }
@@ -181,7 +188,7 @@ void printCustomersByLevel(List<Customer*> customerList) {
                 for (int i = 0; i < customerList.getSize(); i++) {
                     Customer *tmp = customerList.get(i);
                     if (tmp->getLevel() == "VIP")
-                        tmp->display();
+                        cout << tmp->getCustomerToString() << endl;
                 }
                 break;
             }
@@ -193,10 +200,108 @@ void printCustomersByLevel(List<Customer*> customerList) {
     }
 }
 
+void rentItem(List<Item*> *itemList, List<Customer*> *customerList) {
+    cout << "Enter an item ID (xxx) to rent: ";
+    auto *item = findObject<Item>(itemList);
+
+    if (item != nullptr)
+        cout << "Item to rent: " << item->getItemToString() << endl;
+    else return;
+
+    cout << "Enter a customer ID (xxx): ";
+    auto *customer = findObject<Customer>(customerList);
+
+    if (customer != nullptr) {
+        cout << "Customer: " << customer->getCustomerToString() << endl;
+    }
+    else return;
+
+    // Both item and customer found, rent with constraints
+    if (!item->getAvailable()) {
+        cout << "Item is out of stock" << endl;
+        return;
+    }
+
+    // Check if item is already rented
+    int listSize = customer->getListOfRentals()->getSize();
+    if (listSize > 0) {
+        for (int i = 0; i < listSize; i++) {
+            if (item->getId() == customer->getListOfRentals()->get(i)) {
+                cout << "Item is already in customer's rental list" << endl;
+                return;
+            }
+        }
+    }
+
+    // Check if ineligible customer
+    if (customer->getLevel() == "Guest") {
+        if (customer->getListOfRentals()->getSize() >= 2 || item->getLoanType() == "2-day") {
+            cout << "Failed: this Guest is renting a maximum of 2 items, or is trying to rent a 2-day item" << endl;
+            return;
+        }
+    }
+    // Item and customer both eligible
+    customer->getListOfRentals()->append(item->getId());
+
+    if (customer->getLevel() != "VIP" || customer->getPoints() < 100) {
+        cout.precision(2);
+        cout << "Cost ($): " << item->getRentalFee() << endl;
+    }
+
+    customer->rent();
+    item->getRented();
+    cout << "Item rented successfully" << endl;
+}
+
+void returnItem(List<Item*> *itemList, List<Customer*> *customerList) {
+    cout << "Enter an item ID (xxx) to return: ";
+    auto *item = findObject<Item>(itemList);
+
+    if (item != nullptr)
+        cout << "Item to return: " << item->getItemToString() << endl;
+    else return;
+
+    cout << "Enter a customer ID (xxx): ";
+    auto *customer = findObject<Customer>(customerList);
+
+    if (customer != nullptr) {
+        cout << "Customer: " << customer->getCustomerToString() << endl;
+    }
+    else return;
+
+    // Find item in customer's list of rentals
+    bool found = false;
+
+    int listSize = customer->getListOfRentals()->getSize();
+    if (listSize != 0) {
+        for (int i = 0; i < listSize; i++) {
+            if (item->getId() == customer->getListOfRentals()->get(i)) {
+                found = true;
+                // Delete item off rental list
+                customer->getListOfRentals()->deleteNode(i);
+                // Item logistics
+                item->getReturned();
+                customer->returnItem();
+                cout << "Item returned successfully" << endl;
+
+                // Promote customer is applicable
+                if (customer->getNumOfPastRentals() >= 3) {
+                    customer->promote();
+                }
+            }
+        }
+        if (!found)
+            cout << "Item is not in customer's list of rentals" << endl;
+    }
+    else {
+        cout << "Customer's list of rentals is empty" << endl;
+    }
+}
+
 /* TEMPLATES */
 template <typename T>
 void printList(List<T*> list) {
-    if (list.getSize() != 0) {
+    if (list.getSize() > 0) {
         for (int i = 0; i < list.getSize(); i++) {
             list.get(i)->display();
         }
@@ -214,7 +319,7 @@ void editOrDeleteObject(List<T*> *list) {
     bool found = false;
 
     // If list is not empty, search for item
-    if (listSize != 0) {
+    if (listSize > 0) {
         for (int i = 0; i < listSize; i++) {
             T *tmp = list->get(i);
             if (id == tmp->getId().substr(1, 3)) {
@@ -271,7 +376,7 @@ void searchList(List<T*> list) {
     // Search is case insensitive
     keyword = toLowerCase(keyword);
 
-    if (list.getSize() != 0) {
+    if (list.getSize() > 0) {
         for (int i = 0; i < list.getSize(); i++) {
             T *tmp = list.get(i);
             if (toLowerCase(tmp->getId()).find(keyword) != string::npos ||
@@ -294,7 +399,7 @@ void searchList(List<T*> list) {
 template <typename T>
 bool isDuplicateNewObject(T *t, List<T *> *list) {
     int listSize = list->getSize();
-    if (listSize != 0) {
+    if (listSize > 0) {
         for (int i = 0; i < listSize; i++) {
             T *tmp = list->get(i);
             // Validate unique xxx
@@ -310,7 +415,7 @@ bool isDuplicateNewObject(T *t, List<T *> *list) {
 template <typename T>
 bool isDuplicateEditedObject(T *t, List<T*> *list, int index) {
     int listSize = list->getSize();
-    if (listSize != 0) {
+    if (listSize > 0) {
         for (int i = 0; i < listSize; i++) {
             if (i != index) {
                 T *tmp = list->get(i);
@@ -322,6 +427,35 @@ bool isDuplicateEditedObject(T *t, List<T*> *list, int index) {
         return false;
     }
     return false;
+}
+
+// Find a specific item or customer
+template <typename T>
+T* findObject(List<T*> *list) {
+    string id;
+    getline(cin, id);
+
+    if (id.empty()) {
+        cout << "Input is empty" << endl;
+        return nullptr;
+    }
+
+    int listSize = list->getSize();
+    T* tmp = nullptr;
+
+    if (listSize > 0) {
+        for (int i = 0; i < listSize; i++) {
+            tmp = list->get(i);
+            if (id == tmp->getId().substr(1, 3))
+                return tmp;
+        }
+    } else {
+        cout << "Targeted list is empty" << endl;
+    }
+    if (tmp == nullptr)
+        cout << "ID not found in database" << endl;
+
+    return nullptr;
 }
 
 /* FILE I/O */
@@ -384,11 +518,11 @@ void writeItemsToFile(const string& itemFileName, List<Item*> *itemList) {
     outFile.open(itemFileName);
 
     int size = itemList->getSize();
-    if (size == 0)
+    if (size <= 0)
         cout << "Item list is empty" << endl;
 
     else for (int i = 0; i < size; i++)
-            outFile << itemList->get(i)->itemToString() << endl;
+            outFile << itemList->get(i)->getItemToString() << endl;
 
     outFile.close();
 }
@@ -409,7 +543,7 @@ bool loadCustomersFromFile(const string& customerFileName, List<Customer*> *cust
         if (s[0] == 'C') {
             string delim = ", ";
             int i = 0;
-            string fields[6];
+            string fields[7];
 
             auto start = 0U;
             auto end = s.find(delim);
@@ -431,18 +565,18 @@ bool loadCustomersFromFile(const string& customerFileName, List<Customer*> *cust
 
             if (fields[5] == "Guest") {
                 tmp = new Guest(fields[0], fields[1], fields[2],
-                                fields[3], fields[4]);
+                                fields[3], fields[4], "0");
                 lastCustomerGot = tmp;
             }
 
             else if (fields[5] == "Regular") {
                 tmp = new Regular(fields[0], fields[1], fields[2],
-                                  fields[3], fields[4]);
+                                  fields[3], fields[4], "0");
                 lastCustomerGot = tmp;
             }
             else {
                 tmp = new VIP(fields[0], fields[1], fields[2],
-                              fields[3], fields[4]);
+                              fields[3], fields[4], fields[6]);
                 lastCustomerGot = tmp;
             }
             if (!isDuplicateNewObject<Customer>(tmp, customerList)) {
@@ -470,18 +604,16 @@ void writeCustomersToFile(const string& customerFileName, List<Customer*> *custo
     outFile.open(customerFileName);
 
     int size = customerList->getSize();
-    if (size == 0)
+    if (size <= 0)
         cout << "Customer list is empty" << endl;
 
     else for (int i = 0; i < size; i++) {
             Customer *tmp = customerList->get(i);
             // Print customer info
-            outFile << tmp->customerToString() << endl;
+            outFile << tmp->getCustomerToString() << endl;
             // Print list of rentals
-            if (tmp->getListOfRentals()->getSize() != 0) {
-                for (int j = 0; j < tmp->getListOfRentals()->getSize(); ++j) {
-                    outFile << tmp->getListOfRentals()->get(j) << endl;
-                }
+            for (int j = 0; j < tmp->getListOfRentals()->getSize(); j++) {
+                outFile << tmp->getListOfRentals()->get(j) << endl;
             }
         }
     outFile.close();

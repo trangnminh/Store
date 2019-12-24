@@ -1,4 +1,5 @@
 #include "Item.h"
+#include "List.h"
 #include "public.h"
 
 void Item::setId() {

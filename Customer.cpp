@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
-#include "public.h"
+#include "Item.h"
 #include "Customer.h"
+#include "public.h"
 
 using namespace std;
 
@@ -67,8 +68,13 @@ void Customer::editCustomer(int field) {
         }
         default:;
     }
-    cout << "Edited customer: " << customerToString() << endl;
+    cout << "Edited customer: " << getCustomerToString() << endl;
 }
+
+string Customer::getCustomerToString() {
+    string ret = id + ", " + name + ", " + address + ", " + phone + ", " + to_string(numOfPastRentals) + ", " + level;
+    return ret;
+};
 
 // Get editor menu
 void Customer::getEditFieldMenu() {
@@ -84,4 +90,43 @@ void Customer::getEditFieldMenu() {
         if (field == 5) break;
         editCustomer(field);
     }
+}
+
+// Workaround promote (DOES NOT CHANGE OBJECT TYPE)
+void Customer::promote() {
+    if (this->level == "VIP") return;
+
+    else if (this->level == "Guest") {
+        this->level = "Regular";
+        cout << "This Guest is promoted to a Regular!" << endl;
+    }
+
+    else if (this->level == "Regular") {
+        this->level = "VIP";
+        cout << "This Regular is promoted to a VIP!" << endl;
+    }
+
+    this->numOfPastRentals = 0;
+}
+
+// Workaround for VIP rent
+void Customer::rent() {
+    if (this->level == "VIP") {
+        canRentFree = this->points >= 100;
+
+        if (canRentFree) {
+            // Reset points after rent
+            cout << "This VIP just rent this item for free!" << endl;
+            this->canRentFree = false;
+            this->points -= 100;
+        }
+        else {
+            this->points += 10;
+        }
+    }
+}
+
+// Helper for VIP rent
+int Customer::getPoints() {
+    return this->points;
 }
