@@ -18,7 +18,7 @@ void editOrDeleteItem(List<Item*> *itemList);
 void printOutOfStockItems(List<Item*> itemList);
 void searchItems(List<Item*> itemList);
 bool isDuplicateNewItem(Item *item, List<Item*> *itemList);
-bool isDuplicateEditedItem(Item *item, List<Item*> *itemList, int index);
+bool isDuplicateEditedItem(Item *item, List<Item*> *itemList, int index);)
 
 /* MAIN */
 //int main(int argc, char *argv[]) {
@@ -287,3 +287,4 @@ bool isDuplicateEditedItem(Item *item, List<Item*> *itemList, int index) {
     }
     return false;
 }
+

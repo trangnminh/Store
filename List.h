@@ -22,6 +22,7 @@ private:
     int size;
     Node<T> *head, *tail;
 public:
+
     List() {
         size = 0;
         head = NULL;

@@ -26,12 +26,14 @@ void displayGroupCustomer();
 
 int getIdIndex();
 
+void sortById();
+
 static List<Item*> *itemList;
 
 //main
 int main() {
     itemList = new List<Item*>;
-    addItem(itemList); // Example to have a list to borrow in the main menu
+//    addItem(itemList); // Example to have a list to borrow in the main menu
 
     int function = 0;
     do{
@@ -278,7 +280,7 @@ void displayCustomer(){
     cout << "Display all customers: "<<endl;
     if(customerList.getSize() != 0){
         for (int i = 0; i < customerList.getSize(); ++i) {
-            customerList.get(i)->printCustomer();
+            sortById();
         }
     }
 }
@@ -299,7 +301,7 @@ void displayGroupCustomer(){
                 cout << "Guest list: " <<endl;
                 for (int i = 0; i < customerList.getSize(); ++i) {
                     if(customerList.get(i)->getType()=="Guest"){
-                        customerList.get(i)->printCustomer();
+                        sortById();
                         get = true;
                     }
                 }
@@ -309,7 +311,7 @@ void displayGroupCustomer(){
                 cout << "Regular list: " <<endl;
                 for (int i = 0; i < customerList.getSize(); ++i) {
                     if(customerList.get(i)->getType()=="Regular"){
-                        customerList.get(i)->printCustomer();
+                        sortById();
                         get = true;
                     }
                 }
@@ -319,7 +321,7 @@ void displayGroupCustomer(){
                 cout << "VIP list: " <<endl;
                 for (int i = 0; i < customerList.getSize(); ++i) {
                     if(customerList.get(i)->getType()=="VIP"){
-                        customerList.get(i)->printCustomer();
+                        sortById();
                         get = true;
                     }
                 }
@@ -355,4 +357,44 @@ int getIdIndex(){
             return -1;
         }
     } else return -1;
+}
+
+void sortById(){
+    int size = customerList.getSize();
+    customer *customerArr[size];
+    for (int i = 0; i < size; ++i) {
+        customerArr[i] = customerList.get(i);
+    }
+    int n = sizeof(customerArr)/ sizeof(customerArr[0]);
+    for (int i = 0; i < n-1; i++){
+        // Last i elements are already in place
+        for (int j = 0; j < n-i-1; j++){
+            if (customerArr[j]->getId() > customerArr[j+1]->getId())
+                swap(customerArr[j], customerArr[j+1]);
+        }
+    }
+    for (int k = 0; k < size ; ++k) {
+        customerArr[k]->printCustomer() ;
+        cout << endl;
+    }
+}
+
+void sortByName(){
+    int size = customerList.getSize();
+    customer *customerArr[size];
+    for (int i = 0; i < size; ++i) {
+        customerArr[i] = customerList.get(i);
+    }
+    int n = sizeof(customerArr)/ sizeof(customerArr[0]);
+    for (int i = 0; i < n-1; i++){
+        // Last i elements are already in place
+        for (int j = 0; j < n-i-1; j++){
+            if (customerArr[j]->getName() > customerArr[j+1]->getName())
+                swap(customerArr[j], customerArr[j+1]);
+        }
+    }
+    for (int k = 0; k < size ; ++k) {
+        customerArr[k]->printCustomer() ;
+        cout << endl;
+    }
 }
