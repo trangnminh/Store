@@ -146,6 +146,7 @@ void addCusttomer(){
 }
 
 void updateCustomer(){
+    //update info customer
     cout << "Update customer" <<endl;
     int id = getIdIndex();
     if (id == -1)
@@ -155,24 +156,37 @@ void updateCustomer(){
 }
 
 void promoteCustomer(){
+    //Level up
     int id = getIdIndex();
     if (id == -1)
         return;
     customer *getCustomer = customerList.get(id);
     bool qualifi = false;   //To check if the customer was qualied are not
 
+    //Guest rental must be more than 3
     if (getCustomer->getNumberOfRentals() > 2 && getCustomer->getType() == "Guest") {
         customer *newRegular = new Regular();
-        newRegular->upgrade(*getCustomer);  //get information from the guest to the new regular
-        customerList.append(newRegular);    //Add new regular to the list
-        customerList.deleteNode(id);         //mean while delete the old one
+        //To change from guest to regular
+        newRegular->upgrade(*getCustomer);
+
+        //Add new regular to the list
+        customerList.append(newRegular);
+
+        //mean while delete the old guest
+        customerList.deleteNode(id);
         qualifi = true;
     }
 
+    //Regular rental must be more than 3
     if (getCustomer->getNumberOfRentals() > 2 && getCustomer->getType() == "Regular"){
         VIP *newVip = new VIP();
+        //To change from regular to vip
         newVip->upgrade(*getCustomer);
+
+        //Add new vip to the list
         customerList.append(newVip);
+
+        //mean while delete the old regular
         customerList.deleteNode(id);
         qualifi = true;
     }
@@ -192,6 +206,7 @@ void rentItem(){
     if (id == -1)
         return;
     customer *getCustomer = customerList.get(id);
+
     while (true){
         string s;
         bool found = false;
