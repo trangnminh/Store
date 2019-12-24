@@ -79,22 +79,7 @@ public:
     }
 
     void editCustomer(int field);
-
-    // Get editor menu
-    void getEditFieldMenu() {
-        while (true) {
-            cout << "Enter an option:" << endl
-                 << "1. Edit ID" << endl
-                 << "2. Edit name" << endl
-                 << "3. Edit address" << endl
-                 << "4. Edit phone" << endl
-                 << "5. Quit editing" << endl;
-
-            int field = getFunction(itemFields);
-            if (field == 5) break;
-            editCustomer(field);
-        }
-    }
+    void getEditFieldMenu();
 };
 
 class Guest : public Customer {

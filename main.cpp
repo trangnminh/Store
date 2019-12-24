@@ -23,14 +23,9 @@ using namespace std;
 void addItem(List<Item*> *itemList);
 void printOutOfStockItems(List<Item*> itemList);
 void addCustomer(List<Customer*> *customerList);
-void printItemsCustomers(List<Item*> itemList, List<Customer*> customerList);
-void searchItemsCustomers(List<Item*> itemList, List<Customer*> customerList);
 void printCustomersByLevel(List<Customer*> customerList);
 
 // Template functions
-template <typename T>
-void searchList(List<T*> list);
-
 template <typename T>
 void printList(List<T*> list);
 
@@ -38,7 +33,10 @@ template <typename T>
 void editOrDeleteObject(List<T*> *list);
 
 template <typename T>
-bool isDuplicateNewObject(const string& id, T *t, List<T*> *list);
+void searchList(List<T*> list);
+
+template <typename T>
+bool isDuplicateNewObject(T *t, List<T *> *list);
 
 template <typename T>
 bool isDuplicateEditedObject(T *t, List<T*> *list, int index);
@@ -105,7 +103,7 @@ void addItem(List<Item*> *itemList) {
     }
 
     // If item is not duplicate, append to list
-    if (!isDuplicateNewObject(item->getId(), item, itemList)) {
+    if (!isDuplicateNewObject(item, itemList)) {
         itemList->append(item);
         cout << "Added: ";
         item->display();
@@ -141,7 +139,7 @@ void printOutOfStockItems(List<Item*> itemList) {
 
 void addCustomer(List<Customer*> *customerList) {
     Customer *customer = new Guest();
-    if (!isDuplicateNewObject(customer->getId(), customer, customerList)) {
+    if (!isDuplicateNewObject(customer, customerList)) {
         customerList->append(customer);
         cout << "Added: ";
         customer->display();
@@ -149,36 +147,6 @@ void addCustomer(List<Customer*> *customerList) {
         // Else, free memory
         cout << "Duplicate ID, customer will not be added" << endl;
         delete customer;
-    }
-}
-
-// Print all in targeted list
-void printItemsCustomers(List<Item*> itemList, List<Customer*> customerList) {
-    cout << "Enter an option:" << endl
-         << "1. Print all items" << endl
-         << "2. Print all customers" << endl;
-
-    int function = getFunction(itemOrCustomer);
-
-    switch (function) {
-        case 1: printList(itemList); break;
-        case 2: printList(customerList); break;
-        default:;
-    }
-}
-
-// Search in targeted list
-void searchItemsCustomers(List<Item*> itemList, List<Customer*> customerList) {
-    cout << "Enter an option:" << endl
-         << "1. Search items" << endl
-         << "2. Search customers" << endl;
-
-    int function = getFunction(itemOrCustomer);
-
-    switch (function) {
-        case 1: searchList(itemList); break;
-        case 2: searchList(customerList); break;
-        default:;
     }
 }
 
@@ -233,7 +201,7 @@ void printList(List<T*> list) {
             list.get(i)->display();
         }
     } else
-        cout << "Targeted list is empty" << endl;
+        cout << "List is empty" << endl;
 }
 
 template <typename T>
@@ -253,7 +221,7 @@ void editOrDeleteObject(List<T*> *list) {
                 found = true;
                 string oldId = tmp->getId();
 
-                cout << "Selected:" << endl;
+                cout << "Selected: ";
                 tmp->display();
 
                 int function = getEditOrDeleteFunction();
@@ -281,7 +249,7 @@ void editOrDeleteObject(List<T*> *list) {
         if (!found)
             cout << "ID not found" << endl;
     } else
-        cout << "Targeted list is empty" << endl;
+        cout << "List is empty" << endl;
 }
 
 // Search all items containing a keyword in its ID or title
@@ -324,13 +292,13 @@ void searchList(List<T*> list) {
 
 // Check if a new object is a duplicate
 template <typename T>
-bool isDuplicateNewObject(const string& id, T *t, List<T*> *list) {
+bool isDuplicateNewObject(T *t, List<T *> *list) {
     int listSize = list->getSize();
     if (listSize != 0) {
         for (int i = 0; i < listSize; i++) {
             T *tmp = list->get(i);
             // Validate unique xxx
-            if (id.substr(1, 3) == tmp->getId().substr(1, 3))
+            if (t->getId().substr(1, 3) == tmp->getId().substr(1, 3))
                 return true;
         }
         return false;
@@ -338,7 +306,7 @@ bool isDuplicateNewObject(const string& id, T *t, List<T*> *list) {
     return false;
 }
 
-// Check if an edited object is a duplicate
+// Check if an edited object is a duplicate (skip itself)
 template <typename T>
 bool isDuplicateEditedObject(T *t, List<T*> *list, int index) {
     int listSize = list->getSize();
@@ -346,8 +314,8 @@ bool isDuplicateEditedObject(T *t, List<T*> *list, int index) {
         for (int i = 0; i < listSize; i++) {
             if (i != index) {
                 T *tmp = list->get(i);
-                // Validate unique xxx in Ixxx-yyyy / Cxxx
-                if (tmp->getId().substr(1, 3) == tmp->getId().substr(1, 3))
+                // Validate unique xxx
+                if (t->getId().substr(1, 3) == tmp->getId().substr(1, 3))
                     return true;
             }
         }
@@ -401,7 +369,7 @@ bool loadItemsFromFile(const string& itemFileName, List<Item*> *itemList) {
             tmp = new Game(fields[0], fields[1], fields[3],
                            fields[4], fields[5]);
 
-        if (!isDuplicateNewObject(fields[0], tmp, itemList))
+        if (!isDuplicateNewObject(tmp, itemList))
             itemList->append(tmp);
         else
             delete tmp;
@@ -477,7 +445,7 @@ bool loadCustomersFromFile(const string& customerFileName, List<Customer*> *cust
                               fields[3], fields[4]);
                 lastCustomerGot = tmp;
             }
-            if (!isDuplicateNewObject<Customer>(tmp->getId(), tmp, customerList)) {
+            if (!isDuplicateNewObject<Customer>(tmp, customerList)) {
                 customerList->append(tmp);
             }
             else {
