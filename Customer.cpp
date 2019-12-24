@@ -47,12 +47,25 @@ void Customer::setPhone() {
     }
 }
 
-void Customer::display() {
-    // Print customer info
-    cout << id << ", " << name << ", " << address << ", " << phone << ", "
-    << listOfRentals->getSize() << ", " << level << endl;
-
-    // Print list of rented IDs
-    for (int i = 0; i < listOfRentals->getSize(); i++)
-        cout << listOfRentals->get(i) << endl;
+void Customer::editCustomer(int field) {
+    switch (field) {
+        case 1: {
+            setId();
+            break;
+        }
+        case 2: {
+            setName();
+            break;
+        }
+        case 3: {
+            setAddress();
+            break;
+        }
+        case 4: {
+            setPhone();
+            break;
+        }
+        default:;
+    }
+    cout << "Edited customer: " << customerToString() << endl;
 }

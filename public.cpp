@@ -8,9 +8,11 @@ using namespace std;
 int getFunction(functionType type) {
     const string listFunctions = "1 2 3";
     const string itemTypeFunctions = "1 2 3";
+    const string itemFieldFunctions = "1 2 3 4 5 6 7";
+    const string customerFieldFunctions = "1 2 3 4 5";
     const string editOrDeleteFunctions = "1 2 3";
-    const string itemFieldFunctions = "1 2 3 4 5 6";
-    const string itemFieldWithGenreFunctions = "1 2 3 4 5 6 7";
+    const string itemOrCustomerFunctions = "1 2";
+    const string customerLevelFunctions = "1 2 3";
 
     string function;
     getline(cin, function);
@@ -22,24 +24,32 @@ int getFunction(functionType type) {
         size_t foundFunction = 0;
 
         switch (type) {
-            case manageList: {  // Manage list
+            case listMgtFuncs: {  // Manage list
                 foundFunction = listFunctions.find(function);
                 break;
             }
-            case getItemType: { // Choose movie, dvd or game
+            case itemTypes: { // Choose movie, dvd or game
                 foundFunction = itemTypeFunctions.find(function);
+                break;
+            }
+            case itemFields: {    // Modify a field
+                foundFunction = itemFieldFunctions.find(function);
+                break;
+            }
+            case customerFields: {
+                foundFunction = customerFieldFunctions.find(function);
                 break;
             }
             case editOrDelete: {    // Delete or update an item
                 foundFunction = editOrDeleteFunctions.find(function);
                 break;
             }
-            case getItemField: {    // Modify a field
-                foundFunction = itemFieldFunctions.find(function);
+            case itemOrCustomer: {
+                foundFunction = itemOrCustomerFunctions.find(function);
                 break;
             }
-            case getItemFieldWithGenre: {
-                foundFunction = itemFieldWithGenreFunctions.find(function);
+            case customerLevels: {
+                foundFunction = customerLevelFunctions.find(function);
                 break;
             }
             default:;
@@ -54,10 +64,11 @@ int getFunction(functionType type) {
     return stoi(function);
 }
 
+// Helpers
 int getEditOrDeleteFunction() {
     cout << "Enter an option:" << endl
-         << "1. Edit this item" << endl
-         << "2. Delete this item" << endl
+         << "1. Edit this target" << endl
+         << "2. Delete this target" << endl
          << "3. Cancel" << endl;
 
     int function = getFunction(editOrDelete);

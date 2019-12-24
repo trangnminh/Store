@@ -118,125 +118,23 @@ void Item::setGenre() {
 // Edit item by single field
 void Item::editItem(int field) {
     switch (field) {
-        case 1: {
-            setId();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
-        case 2: {
-            setTitle();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
-        case 3: {
-            setLoanType();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
-        case 4: {
-            setNumOfCopies();
-            cout << "Edited item: ";
-            display();
-            available = numOfCopies > 0;
-            break;
-        }
-        case 5: {
-            setRentalFee();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
-        default:;
-    }
-}
-
-void Record::editItem(int field) {
-    switch (field) {
-        case 1: {
-            setId();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
-        case 2: {
-            setTitle();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
-        case 3: {
-            setLoanType();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
-        case 4: {
-            setNumOfCopies();
-            cout << "Edited item: ";
-            display();
-            available = numOfCopies > 0;
-            break;
-        }
-        case 5: {
-            setRentalFee();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
+        case 1: setId(); break;
+        case 2: setTitle(); break;
+        case 3: setLoanType(); break;
+        case 4: setNumOfCopies(); break;
+        case 5: setRentalFee(); break;
         case 6: {
-            setGenre();
-            cout << "Edited item: ";
-            display();
+            if (this->rentalType != "Game")
+                setGenre();
+            else
+                cout << "Game doesn't support Genre" << endl;
             break;
         }
         default:;
     }
-}
-
-void DVD::editItem(int field) {
-    switch (field) {
-        case 1: {
-            setId();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
-        case 2: {
-            setTitle();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
-        case 3: {
-            setLoanType();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
-        case 4: {
-            setNumOfCopies();
-            cout << "Edited item: ";
-            display();
-            available = numOfCopies > 0;
-            break;
-        }
-        case 5: {
-            setRentalFee();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
-        case 6: {
-            setGenre();
-            cout << "Edited item: ";
-            display();
-            break;
-        }
-        default:;
-    }
+    available = numOfCopies > 0;
+    cout << "Edited item: ";
+    display();
 }
 
 // Helper to print edit menu
@@ -248,43 +146,10 @@ void Item::getEditFieldMenu() {
              << "3. Edit loan type" << endl
              << "4. Edit number of copies" << endl
              << "5. Edit rental fee" << endl
-             << "6. Quit editing" << endl;
-
-        int field = getFunction(getItemField);
-        if (field == 6) break;
-        editItem(field);
-    }
-}
-
-void Record::getEditFieldMenu() {
-    while (true) {
-        cout << "Enter an option:" << endl
-             << "1. Edit ID" << endl
-             << "2. Edit title" << endl
-             << "3. Edit loan type" << endl
-             << "4. Edit number of copies" << endl
-             << "5. Edit rental fee" << endl
-             << "6. Edit genre" << endl
+             << "6. Edit genre (non-Game only)" << endl
              << "7. Quit editing" << endl;
 
-        int field = getFunction(getItemFieldWithGenre);
-        if (field == 7) break;
-        editItem(field);
-    }
-}
-
-void DVD::getEditFieldMenu() {
-    while (true) {
-        cout << "Enter an option:" << endl
-             << "1. Edit ID" << endl
-             << "2. Edit title" << endl
-             << "3. Edit loan type" << endl
-             << "4. Edit number of copies" << endl
-             << "5. Edit rental fee" << endl
-             << "6. Edit genre" << endl
-             << "7. Quit editing" << endl;
-
-        int field = getFunction(getItemFieldWithGenre);
+        int field = getFunction(itemFields);
         if (field == 7) break;
         editItem(field);
     }
@@ -295,19 +160,10 @@ void Item::display() {
     cout.precision(2);
     cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
          << this->loanType << ", " << this->numOfCopies << ", "
-         << fixed << this->rentalFee << endl;
-}
+         << fixed << this->rentalFee;
 
-void Record::display() {
-    cout.precision(2);
-    cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
-        << this->loanType << ", " << this->numOfCopies << ", "
-        << fixed << this->rentalFee << ", " << this->genre << endl;
-}
+    if (this->rentalType != "Game" )
+        cout << ", " << this->genre;
 
-void DVD::display() {
-    cout.precision(2);
-    cout << this->id << ", " << this->title << ", " << this->rentalType << ", "
-         << this->loanType << ", " << this->numOfCopies << ", "
-         << fixed << this->rentalFee << ", " << this->genre << endl;
+    cout << endl;
 }

@@ -80,9 +80,12 @@ public:
         this->available = true;
     }
 
-    virtual void getEditFieldMenu();
-    virtual void editItem(int field);
-    virtual void display();
+    // Edit item
+    void getEditFieldMenu();
+    void editItem(int field);
+
+    // Print
+    void display();
 };
 
 // Record
@@ -103,10 +106,6 @@ public:
         string ret = Item::itemToString() + ", " + this->genre;
         return ret;
     }
-
-    void getEditFieldMenu() override;
-    void editItem(int field) override;
-    void display() override;
 };
 
 // DVD
@@ -127,10 +126,6 @@ public:
         string ret = Item::itemToString() + ", " + this->genre;
         return ret;
     }
-
-    void getEditFieldMenu() override;
-    void editItem(int field) override;
-    void display() override;
 };
 
 // Game
@@ -140,10 +135,9 @@ public:
         this->rentalType = "Game";
     }
 
-    Game(string id, string title, string loanType, string numOfCopies, string rentalFee, string genre) :
+    Game(string id, string title, string loanType, string numOfCopies, string rentalFee) :
     Item(id, title, loanType, numOfCopies, rentalFee, genre) {
         this->rentalType = "Game";
-        this->genre = genre;
     }
 };
 

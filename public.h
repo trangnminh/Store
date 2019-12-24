@@ -11,7 +11,7 @@
 using namespace std;
 
 // Enums for different types of functions
-enum functionType{manageList, getItemType, editOrDelete, getItemField, getItemFieldWithGenre};
+enum functionType{listMgtFuncs, itemTypes, itemFields, customerFields, editOrDelete, itemOrCustomer, customerLevels};
 
 // Return user's desired function
 int getFunction(functionType type);

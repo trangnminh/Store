@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include <utility>
 #include "List.h"
 #include "public.h"
 
@@ -38,6 +37,10 @@ public:
         listOfRentals = new List<string>();
     }
 
+    virtual ~Customer() {
+        free(listOfRentals);    // Free rentals memory
+    }
+
     // Getters
     string getId() {
         return this->id;
@@ -47,17 +50,50 @@ public:
         return this->listOfRentals;
     }
 
+    string getTitle() {
+        return this->name;
+    }
+
+    string getLevel() {
+        return this->level;
+    }
+
     // Setters
     void setId();
     void setName();
     void setAddress();
     void setPhone();
 
+    void setId(string oldId) {
+        this->id = std::move(oldId);
+    }
+
     // Print
-    void display();
-    virtual string customerToString() {
-        string ret = id + ", " + name + ", " + address + ", " + phone + ", " + to_string(numOfRentals);
+    void display() {
+        cout << customerToString() << endl;
+    }
+
+    string customerToString() {
+        string ret = id + ", " + name + ", " + address + ", " + phone + ", " + to_string(numOfRentals) + ", " + level;
         return ret;
+    }
+
+    void editCustomer(int field);
+
+    // Get editor menu
+    void getEditFieldMenu() {
+        while (true) {
+            cout << "Enter an option:" << endl
+                 << "1. Edit ID" << endl
+                 << "2. Edit name" << endl
+                 << "3. Edit address" << endl
+                 << "4. Edit phone" << endl
+                 << "5. Quit editing" << endl;
+
+            int field = getFunction(itemFields);
+            if (field == 5) break;
+            editCustomer(field);
+        }
     }
 };
 
@@ -72,11 +108,6 @@ public:
     Customer(std::move(id), std::move(name), std::move(address), std::move(phone), numOfRentals) {
         this->level = "Guest";
     }
-
-    string customerToString() override {
-        string ret = Customer::customerToString() + ", Guest";
-        return ret;
-    }
 };
 
 class Regular : public Customer {
@@ -89,11 +120,6 @@ public:
     Regular(string id, string name, string address, string phone, const string& numOfRentals) :
     Customer(std::move(id), std::move(name), std::move(address), std::move(phone), numOfRentals) {
         this->level = "Regular";
-    }
-
-    string customerToString() override {
-        string ret = Customer::customerToString() + ", Regular";
-        return ret;
     }
 };
 
@@ -112,12 +138,6 @@ public:
         this->level = "VIP";
         this->points = 0;
     }
-
-    string customerToString() override {
-        string ret = Customer::customerToString() + ", VIP";
-        return ret;
-    }
 };
-
 
 #endif //STORE_CUSTOMER_H
