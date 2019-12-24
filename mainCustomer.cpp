@@ -194,15 +194,42 @@ void rentItem(){
     customer *getCustomer = customerList.get(id);
     while (true){
         string s;
+        bool found = false;
         cout << "Please enter item to borrow (name or id): ";
         getline(cin,s);
-        if (getCustomer->rentItems(s,itemList)){
-            cout << "Rent successfully. Continue? \n1.Yes\n2.No\nPlease choose: " ;
-            int function = getFunction(3);
-            if (function == 2)
-                break;
+        //To check the size of item list in the store
+        if (itemList->getSize()!=0){
+            for (int i = 0; i < itemList->getSize(); ++i) {
+                Item *item = itemList->get(i);
+                if (s == item -> getId() ||s == item->getTitle()){
+                    //Item was found in the item list
+                    found = true;
+                    if (!item->isAvailable()){
+                        cout << "Item is unavailable" <<endl;
+                        break;
+                    }
+                    if (getCustomer->rentItems()){
+                        //Decrease the number of copies of customer
+                        item -> setNumOfCopies(item->getNumOfCopies()-1);
+
+                        //To save the object in the list of borrowed of customer
+                        getCustomer->getItemListOfCustomer()->append(item);
+
+                        //Continue renting
+                        cout << "Rent successfully. Continue? \n1.Yes\n2.No\nPlease choose: " ;
+                        int function = getFunction(3);
+                        if (function == 2)
+                            break;
+                    }
+                }
+            }
         } else
             break;
+        if (!found){
+            cout << "No item was found in the item list of store"<<endl;
+            break;
+        }
+
     }
 }
 

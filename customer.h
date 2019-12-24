@@ -59,7 +59,7 @@ public:
     void upgrade(customer guest);
 
     //rent items
-    virtual bool rentItems(string itemRent,List<Item*> *itemList);
+    virtual bool rentItems();
 
     //return items
     bool turnItems(string itemReturn, List<Item*> *itemList);
@@ -80,7 +80,7 @@ public:
     }
 
     //Rent an item but with restriction
-    bool rentItems(string itemRent,List<Item*> *itemList) override ;
+    bool rentItems() override ;
 };
 
 class VIP : public customer{
@@ -94,7 +94,7 @@ public:
         this -> type = "VIP";
         point = 0;
     }
-    bool rentItems(string itemRent,List<Item*> *itemList) override ;
+    bool rentItems() override ;
 };
 
 class Regular : public customer{

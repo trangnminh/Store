@@ -146,22 +146,8 @@ inline void customer::upgrade(customer guest) {
 }
 
 //Rent books
-inline bool customer::rentItems(string itemRent, List<Item*> *itemList) {
-    if (itemList->getSize()!=0){
-        for (int i = 0; i < itemList->getSize(); ++i) {
-            Item *item = itemList->get(i);
-            if (itemRent == item->getId() || itemRent == item->getTitle()){
-                if (!item->isAvailable()){
-                    cout << "Item is unavailable" <<endl;
-                    return false;
-                }
-                item -> setNumOfCopies(item->getNumOfCopies()-1);
-                return true;
-            }
-        }
-    }
-    cout << "No item was found"<<endl;
-    return false;
+inline bool customer::rentItems() {
+    return true;
 }
 
 inline bool customer::turnItems(string itemReturn, List<Item*> *itemList) {
@@ -210,60 +196,31 @@ inline List<Item *> *customer::getItemListOfCustomer() const {
     return itemListOfCustomer;
 }
 
-inline bool Guest::rentItems(string itemRent,List<Item*> *itemList) {
+inline bool Guest::rentItems() {
     //Once the number renting is more than 2 then false
     if (getItemListOfCustomer()->getSize() > 1){
         cout << "Number of rent book is 2" <<endl;
         return false;
     }
-    if (itemList->getSize()!=0){
-        for (int i = 0; i < itemList->getSize(); ++i) {
-            Item *item = itemList->get(i);
-            if (itemRent == item -> getId() ||itemRent == item->getTitle()){
-                if (!item->isAvailable()){
-                    cout << "Item is unavailable" <<endl;
-                    return false;
-                }
-                item -> setNumOfCopies(item->getNumOfCopies()-1);
-                getItemListOfCustomer()->append(item);
-                return true;
-            }
-        }
-    }
-    cout << "No item was found"<<endl;
-    return false;
+    return true;
 }
 
-inline bool VIP::rentItems(string itemRent,List<Item*> *itemList) {
+inline bool VIP::rentItems() {
     //When the vip borrow item , point will be added
-    if (itemList->getSize()!=0){
-        for (int i = 0; i < itemList->getSize(); ++i) {
-            Item *item = itemList->get(i);
-            if (itemRent == item->getTitle() || itemRent == item->getId()){
-                if (!item->isAvailable()){
-                    cout << "Item is unavailable" <<endl;
-                    return false;
-                }
-                item -> setNumOfCopies(item->getNumOfCopies()-1);
-                getItemListOfCustomer()->append(item);
-                point = point + 10;
-                if (point >= 100){
-                    free_item = true;
-                }
-                //Condition if user can rent an iem for free and not use before
-                if (free_item && !use_free_item){
-                    string s;
-                    cout << "Customer can rent an item for free. Use ?\n1. Yes\n2.No";
-                    getline(cin,s);
-                    if (s == "1"){
-                        use_free_item = true;
-                    }
-                }
-                return true;
-            }
+    point = point + 10;
+    if (point >= 100){
+        //When the points is more than 100, customer can rent 1 item for free
+        free_item = true;
+    }
+    //Condition if user can rent an iem for free and not use before
+    if (free_item && !use_free_item){
+        string s;
+        cout << "Customer can rent an item for free. Use ?\n1. Yes\n2.No";
+        getline(cin,s);
+        if (s == "1"){
+            use_free_item = true;
         }
     }
-    cout << "No item was found"<<endl;
-    return false;
+    return true;
 }
 
