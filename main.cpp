@@ -63,10 +63,10 @@ int main(int argc, char *argv[]) {
     else return 1;
 
     // Load all items and customers
-    List<Item*> itemList;
-    List<Customer*> customerList;
+    auto *itemList = new List<Item*>();
+    auto *customerList = new List<Customer*>();
 
-    if (!loadItemsFromFile(itemFile, &itemList) || !loadCustomersFromFile(customerFile, &customerList))
+    if (!loadItemsFromFile(itemFile, itemList) || !loadCustomersFromFile(customerFile, customerList))
         return 1;
 
     // Do stuff
@@ -74,12 +74,16 @@ int main(int argc, char *argv[]) {
     do {
         printMenu();
         function = getFunction(listMgtFuncs);
-        callFunction(function, &itemList, &customerList);
+        callFunction(function, itemList, customerList);
     } while (function != EXIT);
 
     // Write to file before exit
-    writeItemsToFile(itemFile, &itemList);
-    writeCustomersToFile(customerFile, &customerList);
+    writeItemsToFile(itemFile, itemList);
+    writeCustomersToFile(customerFile, customerList);
+
+    // Free allocated memory
+    free (itemList);
+    free (customerList);
 
     displayGroupInfo();
     return 0;
@@ -290,6 +294,7 @@ void returnItem(List<Item*> *itemList, List<Customer*> *customerList) {
                 if (customer->getNumOfPastRentals() >= 3) {
                     customer->promote();
                 }
+                break;
             }
         }
         if (!found)
@@ -473,7 +478,6 @@ bool isDuplicateNewObject(T *t, List<T *> *list) {
             T *tmp = list->get(i);
             // Validate unique xxx
             if (t->getId().substr(1, 3) == tmp->getId().substr(1, 3)) {
-                cout << "Duplicate! " << t->getId().substr(1, 3) << " " << tmp->getId().substr(1, 3) << endl;
                 return true;
             }
 
@@ -524,9 +528,8 @@ T* findObject(List<T*> *list) {
     } else {
         cout << "Targeted list is empty" << endl;
     }
-    if (tmp == nullptr)
-        cout << "ID not found in database" << endl;
 
+    cout << "ID not found in database" << endl;
     return nullptr;
 }
 
