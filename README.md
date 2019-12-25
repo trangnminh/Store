@@ -15,13 +15,13 @@ Features:
 	* auto points and freebies for VIP customers  
 	* auto items and customers text files I/O  
 
-Details in file EEET2482_Assignment2_Sem3_2019.pdf  
+Details in file EEET2482_Assignment2_Sem3_2019.pdf (folder assignment)  
 
 Usage:  
 	cmd: start store.exe customer_file_name item_file_name  
 	Terminal: ./store customer_file_name item_file_name  
 
-!!!IMPORTANT!!!  
+!!! IMPORTANT !!!  
 ! Text files MUST BE of format:  
 	Item: Ixxx-yyyy, title, rentalType, loanType, numOfCopies, rentalFee, genre (if non-Game)  
 	Customer: Cxxx, name, address, phone, numOfPastRentals, level, points (if VIP)  
