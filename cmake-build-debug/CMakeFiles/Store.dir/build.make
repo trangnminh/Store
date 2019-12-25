@@ -34,10 +34,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/98/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /snap/clion/99/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/98/bin/cmake/linux/bin/cmake -E remove -f
+RM = /snap/clion/99/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -70,32 +70,62 @@ CMakeFiles/Store.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Store.dir/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/minesk/CLionProjects/Store/main.cpp -o CMakeFiles/Store.dir/main.cpp.s
 
-CMakeFiles/Store.dir/item.cpp.o: CMakeFiles/Store.dir/flags.make
-CMakeFiles/Store.dir/item.cpp.o: ../item.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/minesk/CLionProjects/Store/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Store.dir/item.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Store.dir/item.cpp.o -c /home/minesk/CLionProjects/Store/item.cpp
+CMakeFiles/Store.dir/Item.cpp.o: CMakeFiles/Store.dir/flags.make
+CMakeFiles/Store.dir/Item.cpp.o: ../Item.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/minesk/CLionProjects/Store/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Store.dir/Item.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Store.dir/Item.cpp.o -c /home/minesk/CLionProjects/Store/Item.cpp
 
-CMakeFiles/Store.dir/item.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Store.dir/item.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/minesk/CLionProjects/Store/item.cpp > CMakeFiles/Store.dir/item.cpp.i
+CMakeFiles/Store.dir/Item.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Store.dir/Item.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/minesk/CLionProjects/Store/Item.cpp > CMakeFiles/Store.dir/Item.cpp.i
 
-CMakeFiles/Store.dir/item.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Store.dir/item.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/minesk/CLionProjects/Store/item.cpp -o CMakeFiles/Store.dir/item.cpp.s
+CMakeFiles/Store.dir/Item.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Store.dir/Item.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/minesk/CLionProjects/Store/Item.cpp -o CMakeFiles/Store.dir/Item.cpp.s
+
+CMakeFiles/Store.dir/public.cpp.o: CMakeFiles/Store.dir/flags.make
+CMakeFiles/Store.dir/public.cpp.o: ../public.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/minesk/CLionProjects/Store/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Store.dir/public.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Store.dir/public.cpp.o -c /home/minesk/CLionProjects/Store/public.cpp
+
+CMakeFiles/Store.dir/public.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Store.dir/public.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/minesk/CLionProjects/Store/public.cpp > CMakeFiles/Store.dir/public.cpp.i
+
+CMakeFiles/Store.dir/public.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Store.dir/public.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/minesk/CLionProjects/Store/public.cpp -o CMakeFiles/Store.dir/public.cpp.s
+
+CMakeFiles/Store.dir/Customer.cpp.o: CMakeFiles/Store.dir/flags.make
+CMakeFiles/Store.dir/Customer.cpp.o: ../Customer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/minesk/CLionProjects/Store/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Store.dir/Customer.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Store.dir/Customer.cpp.o -c /home/minesk/CLionProjects/Store/Customer.cpp
+
+CMakeFiles/Store.dir/Customer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Store.dir/Customer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/minesk/CLionProjects/Store/Customer.cpp > CMakeFiles/Store.dir/Customer.cpp.i
+
+CMakeFiles/Store.dir/Customer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Store.dir/Customer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/minesk/CLionProjects/Store/Customer.cpp -o CMakeFiles/Store.dir/Customer.cpp.s
 
 # Object files for target Store
 Store_OBJECTS = \
 "CMakeFiles/Store.dir/main.cpp.o" \
-"CMakeFiles/Store.dir/item.cpp.o"
+"CMakeFiles/Store.dir/Item.cpp.o" \
+"CMakeFiles/Store.dir/public.cpp.o" \
+"CMakeFiles/Store.dir/Customer.cpp.o"
 
 # External object files for target Store
 Store_EXTERNAL_OBJECTS =
 
 Store: CMakeFiles/Store.dir/main.cpp.o
-Store: CMakeFiles/Store.dir/item.cpp.o
+Store: CMakeFiles/Store.dir/Item.cpp.o
+Store: CMakeFiles/Store.dir/public.cpp.o
+Store: CMakeFiles/Store.dir/Customer.cpp.o
 Store: CMakeFiles/Store.dir/build.make
 Store: CMakeFiles/Store.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/minesk/CLionProjects/Store/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Store"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/minesk/CLionProjects/Store/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable Store"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Store.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

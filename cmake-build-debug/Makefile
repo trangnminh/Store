@@ -39,10 +39,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/98/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /snap/clion/99/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/98/bin/cmake/linux/bin/cmake -E remove -f
+RM = /snap/clion/99/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /home/minesk/CLionProjects/Store/cmake-build-debug
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/snap/clion/98/bin/cmake/linux/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/snap/clion/99/bin/cmake/linux/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -70,7 +70,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/snap/clion/98/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/snap/clion/99/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -123,32 +123,59 @@ Store/fast:
 	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/build
 .PHONY : Store/fast
 
-item.o: item.cpp.o
+Customer.o: Customer.cpp.o
 
-.PHONY : item.o
+.PHONY : Customer.o
 
 # target to build an object file
-item.cpp.o:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/item.cpp.o
-.PHONY : item.cpp.o
+Customer.cpp.o:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/Customer.cpp.o
+.PHONY : Customer.cpp.o
 
-item.i: item.cpp.i
+Customer.i: Customer.cpp.i
 
-.PHONY : item.i
+.PHONY : Customer.i
 
 # target to preprocess a source file
-item.cpp.i:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/item.cpp.i
-.PHONY : item.cpp.i
+Customer.cpp.i:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/Customer.cpp.i
+.PHONY : Customer.cpp.i
 
-item.s: item.cpp.s
+Customer.s: Customer.cpp.s
 
-.PHONY : item.s
+.PHONY : Customer.s
 
 # target to generate assembly for a file
-item.cpp.s:
-	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/item.cpp.s
-.PHONY : item.cpp.s
+Customer.cpp.s:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/Customer.cpp.s
+.PHONY : Customer.cpp.s
+
+Item.o: Item.cpp.o
+
+.PHONY : Item.o
+
+# target to build an object file
+Item.cpp.o:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/Item.cpp.o
+.PHONY : Item.cpp.o
+
+Item.i: Item.cpp.i
+
+.PHONY : Item.i
+
+# target to preprocess a source file
+Item.cpp.i:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/Item.cpp.i
+.PHONY : Item.cpp.i
+
+Item.s: Item.cpp.s
+
+.PHONY : Item.s
+
+# target to generate assembly for a file
+Item.cpp.s:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/Item.cpp.s
+.PHONY : Item.cpp.s
 
 main.o: main.cpp.o
 
@@ -177,6 +204,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+public.o: public.cpp.o
+
+.PHONY : public.o
+
+# target to build an object file
+public.cpp.o:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/public.cpp.o
+.PHONY : public.cpp.o
+
+public.i: public.cpp.i
+
+.PHONY : public.i
+
+# target to preprocess a source file
+public.cpp.i:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/public.cpp.i
+.PHONY : public.cpp.i
+
+public.s: public.cpp.s
+
+.PHONY : public.s
+
+# target to generate assembly for a file
+public.cpp.s:
+	$(MAKE) -f CMakeFiles/Store.dir/build.make CMakeFiles/Store.dir/public.cpp.s
+.PHONY : public.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -186,12 +240,18 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Store"
 	@echo "... edit_cache"
-	@echo "... item.o"
-	@echo "... item.i"
-	@echo "... item.s"
+	@echo "... Customer.o"
+	@echo "... Customer.i"
+	@echo "... Customer.s"
+	@echo "... Item.o"
+	@echo "... Item.i"
+	@echo "... Item.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... public.o"
+	@echo "... public.i"
+	@echo "... public.s"
 .PHONY : help
 
 

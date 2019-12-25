@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Store.dir/item.cpp.o"
+  "CMakeFiles/Store.dir/Customer.cpp.o"
+  "CMakeFiles/Store.dir/Item.cpp.o"
   "CMakeFiles/Store.dir/main.cpp.o"
+  "CMakeFiles/Store.dir/public.cpp.o"
   "Store"
   "Store.pdb"
 )

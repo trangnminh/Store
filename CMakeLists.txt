@@ -3,4 +3,4 @@ project(Store)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Store main.cpp item.cpp item.h LinkedList.h customer.h)
+add_executable(Store main.cpp Item.h Item.cpp List.h public.h public.cpp Customer.cpp Customer.h)
