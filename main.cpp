@@ -1,10 +1,3 @@
-/*
- * TO-DO:
- * - rebuild UI
- * - set while loop for program
- * - print group info
- */
-
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -52,19 +45,11 @@ void writeItemsToFile(const string& itemFileName, List<Item*> *itemList);
 bool loadCustomersFromFile(const string& customerFileName, List<Customer*> *customerList);
 void writeCustomersToFile(const string& customerFileName, List<Customer*> *customerList);
 
-// Helper
-bool checkArgc(int argc) {
-    // Get input files from command line
-    if (argc == 3) return true;
-    else {
-        cout << "Usage: start store.exe customer_file_name.txt item_file_name.txt" << endl
-        << "* NOTE: display format is as follows:" << endl
-        << "* Item: Ixxx-yyyy, title, rentalType, loanType, numOfCopies, rentalFee, genre (if non-Game)" << endl
-        << "* Customer: Cxxx, name, address, phone, numOfRentals, level" << endl
-        << "* (list of rented IDs)" << endl;
-        return false;
-    }
-}
+// Helpers
+bool checkArgc(int argc);
+void printMenu();
+void callFunction(int function, List<Item*> *itemList, List<Customer*> *customerList);
+void displayGroupInfo();
 
 /* MAIN */
 int main(int argc, char *argv[]) {
@@ -80,38 +65,30 @@ int main(int argc, char *argv[]) {
     // Load all items and customers
     List<Item*> itemList;
     List<Customer*> customerList;
-    loadItemsFromFile(itemFile, &itemList);
-    loadCustomersFromFile(customerFile, &customerList);
 
-    printSorted(&itemList);
-    printSorted(&customerList);
+    if (!loadItemsFromFile(itemFile, &itemList) || !loadCustomersFromFile(customerFile, &customerList))
+        return 1;
 
-//    printList(itemList);
-//    cout << endl;
-//    foo(&itemList, 2);
-//    cout << endl;
-//    printList(itemList);
-//    cout << endl;
-
-//    printList(customerList);
-//    cout << endl;
-//    foo(&customerList, 2);
-//    cout << endl;
-//    printList(customerList);
-//    cout << endl;
-
-    // do stuff
-    //rentItem(&itemList, &customerList);
-    //rentItem(&itemList, &customerList);
+    // Do stuff
+    int function = 0;
+    do {
+        printMenu();
+        function = getFunction(listMgtFuncs);
+        callFunction(function, &itemList, &customerList);
+    } while (function != EXIT);
 
     // Write to file before exit
     writeItemsToFile(itemFile, &itemList);
     writeCustomersToFile(customerFile, &customerList);
+
+    displayGroupInfo();
     return 0;
 }
 
 /* LIST FUNCTIONS */
 void addItem(List<Item*> *itemList) {
+    cout << "Creating new item..." << endl;
+
     cout << "Enter an option:" << endl
          << "1. Add a new Record" << endl
          << "2. Add a new DVD" << endl
@@ -129,7 +106,7 @@ void addItem(List<Item*> *itemList) {
     }
 
     // If item is not duplicate, append to list
-    if (!isDuplicateNewObject<Item>(item, itemList)) {
+    if (!isDuplicateNewObject(item, itemList)) {
         itemList->append(item);
         cout << "Added: ";
         item->display();
@@ -144,7 +121,7 @@ void addItem(List<Item*> *itemList) {
 }
 
 void printOutOfStockItems(List<Item*> itemList) {
-    cout << "Printing out-of-stock items.." << endl;
+    cout << "Printing out-of-stock items..." << endl;
     int notStocked = 0;
     if (itemList.getSize() > 0) {
         for (int i = 0; i < itemList.getSize(); i++) {
@@ -164,10 +141,12 @@ void printOutOfStockItems(List<Item*> itemList) {
 }
 
 void addCustomer(List<Customer*> *customerList) {
+    cout << "Creating new customer..." << endl;
     Customer *customer = new Guest();
-    if (!isDuplicateNewObject<Customer>(customer, customerList)) {
-        customerList->append(customer);
+
+    if (!isDuplicateNewObject(customer, customerList)) {
         cout << "Added: ";
+        customerList->append(customer);
         customer->display();
     } else  {
         // Else, free memory
@@ -177,10 +156,12 @@ void addCustomer(List<Customer*> *customerList) {
 }
 
 void printCustomersByLevel(List<Customer*> customerList) {
+    cout << "Printing customers by level..." << endl;
+
     cout << "Enter an option:" << endl
          << "1. Print all Guests" << endl
          << "2. Print all Regulars" << endl
-         << "2. Print all VIPs" << endl;
+         << "3. Print all VIPs" << endl;
 
     int function = getFunction(customerLevels);
 
@@ -220,6 +201,7 @@ void printCustomersByLevel(List<Customer*> customerList) {
 }
 
 void rentItem(List<Item*> *itemList, List<Customer*> *customerList) {
+    cout << "Renting an item..." << endl;
     cout << "Enter an item ID (xxx) to rent: ";
     auto *item = findObject<Item>(itemList);
 
@@ -273,6 +255,7 @@ void rentItem(List<Item*> *itemList, List<Customer*> *customerList) {
 }
 
 void returnItem(List<Item*> *itemList, List<Customer*> *customerList) {
+    cout << "Returning an item..." << endl;
     cout << "Enter an item ID (xxx) to return: ";
     auto *item = findObject<Item>(itemList);
 
@@ -422,7 +405,7 @@ void editOrDeleteObject(List<T*> *list) {
 
                     // If edited item is a duplicate, put back old id
                     if (isDuplicateEditedObject(tmp, list, i)) {
-                        cout << "New ID is a duplicate, reverting to old ID.." << endl;
+                        cout << "New ID is a duplicate, reverting to old ID..." << endl;
                         tmp->setId(oldId);
                         cout << "Edited: ";
                         tmp->display();
@@ -456,7 +439,7 @@ void searchList(List<T*> list) {
     }
 
     // Start searching for matching title or id
-    cout << "Searching matched IDs or titles.." << endl;
+    cout << "Searching matched IDs or titles..." << endl;
     int match = 0;
 
     // Search is case insensitive
@@ -489,8 +472,11 @@ bool isDuplicateNewObject(T *t, List<T *> *list) {
         for (int i = 0; i < listSize; i++) {
             T *tmp = list->get(i);
             // Validate unique xxx
-            if (t->getId().substr(1, 3) == tmp->getId().substr(1, 3))
+            if (t->getId().substr(1, 3) == tmp->getId().substr(1, 3)) {
+                cout << "Duplicate! " << t->getId().substr(1, 3) << " " << tmp->getId().substr(1, 3) << endl;
                 return true;
+            }
+
         }
         return false;
     }
@@ -703,4 +689,101 @@ void writeCustomersToFile(const string& customerFileName, List<Customer*> *custo
             }
         }
     outFile.close();
+}
+
+/* HELPERS */
+bool checkArgc(int argc) {
+    // Get input files from command line
+    if (argc == 3) return true;
+    else {
+        cout << "Usage: start store.exe customer_file_name.txt item_file_name.txt" << endl
+             << "    * NOTE: text file format is as follows:" << endl
+             << "      -------------------------------------" << endl
+             << "      Item: Ixxx-yyyy, title, rentalType, loanType, numOfCopies, rentalFee + genre (if non-Game)" << endl
+             << "      Customer: Cxxx, name, address, phone, numOfPastRentals, level + points (if VIP)" << endl
+             << "                (list of rented IDs)" << endl;
+        return false;
+    }
+}
+
+void printMenu() {
+    cout <<"------------------------------" << endl
+         <<"Welcome to Genie's video store" << endl
+         << "Enter an option below" << endl
+         << "1. Print sorted list of items" << endl
+         << "2. Print sorted list of customers (rentals excluded)" << endl
+         << "3. Print all customers (full details)" << endl
+         << "4. Add a new item" << endl
+         << "5. Update/delete an item" << endl
+         << "6. Add a new customer" << endl
+         << "7. Update/delete a customer" << endl
+         << "8. Rent an item" << endl
+         << "9. Return an item" << endl
+         << "10. Print out-of-stock items" << endl
+         << "11. Print customers by level" << endl
+         << "12. Search items" << endl
+         << "13. Search customers" << endl
+         << "Exit" << endl;
+}
+
+void callFunction(int function, List<Item*> *itemList, List<Customer*> *customerList) {
+    switch (function) {
+        case 1: {
+            cout << "Printing sorted items..." << endl;
+            printSorted(itemList);
+            break;
+        }
+        case 2: {
+            cout << "Printing sorted customers..." << endl;
+            printSorted(customerList);
+            break;
+        }
+        case 3: {
+            cout << "Printing all customers with rental details..." << endl;
+            printList(*customerList);
+            break;
+        }
+        case 4: addItem(itemList); break;
+
+        case 5: {
+            cout << "Updating an item..." << endl;
+            editOrDeleteObject(itemList);
+            break;
+        }
+        case 6: addCustomer(customerList); break;
+
+        case 7: {
+            cout << "Updating a customer..." << endl;
+            editOrDeleteObject(customerList);
+            break;
+        }
+        case 8: rentItem(itemList, customerList); break;
+        case 9: returnItem(itemList, customerList); break;
+        case 10: printOutOfStockItems(*itemList); break;
+        case 11: printCustomersByLevel(*customerList); break;
+
+        case 12: {
+            cout << "Searching for items..." << endl;
+            searchList(*itemList);
+            break;
+        }
+        case 13: {
+            cout << "Searching for customers..." << endl;
+            searchList(*customerList);
+            break;
+        }
+
+        case EXIT: cout << "Goodbye" << endl; break;
+        default: cout << "Function not found" << endl;
+    }
+}
+
+// Display group's members and IDs
+void displayGroupInfo() {
+    cout
+            << "--------------------------------------------------" << endl
+            << "ASSIGNMENT 2 Group \"God saving me\"" << endl
+            << "s3751450, s3751450@rmit.edu.vn, Trang, Nguyen Minh" << endl
+            << "s3750789, s3750789@rmit.edu.vn, Han, Tran Mach So" << endl
+            << "s3574922, s3574922@rmit.edu.vn, Dat, Tran Quoc" << endl;
 }

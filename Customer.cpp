@@ -74,6 +74,10 @@ void Customer::editCustomer(int field) {
 string Customer::getObjectString() {
     string ret = id + ", " + name + ", " + address + ", " + phone + ", "
             + to_string(numOfPastRentals) + ", " + level;
+
+    if (this->level == "VIP")
+        ret = ret + ", " + to_string(this->points);
+
     return ret;
 };
 

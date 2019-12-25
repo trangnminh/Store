@@ -108,7 +108,7 @@ public:
         }
     }
 
-    virtual string getObjectString();
+    string getObjectString();
 
     // Edit customer
     void editCustomer(int field);
@@ -154,12 +154,6 @@ public:
     Customer(id, name, address, phone, numOfPastRentals, points) {
         this->level = "VIP";
     }
-
-    string getObjectString() override {
-        string ret = id + ", " + name + ", " + address + ", " + phone + ", " + to_string(numOfPastRentals)
-                + ", " + level + ", " + to_string(points);
-        return ret;
-    };
 };
 
 #endif //STORE_CUSTOMER_H

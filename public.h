@@ -14,6 +14,8 @@ using namespace std;
 // Enums for different types of functions
 enum functionType{listMgtFuncs, itemTypes, itemFields, customerFields, editOrDelete, itemOrCustomer, customerLevels};
 
+const int EXIT = 999;
+
 // Return user's desired function
 int getFunction(functionType type);
 

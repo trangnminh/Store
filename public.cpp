@@ -6,7 +6,7 @@
 using namespace std;
 
 int getFunction(functionType type) {
-    const string listFunctions = "1 2 3";
+    const string listFunctions = "1 2 3 4 5 6 7 8 9 10 11 12 13";
     const string itemTypeFunctions = "1 2 3";
     const string itemFieldFunctions = "1 2 3 4 5 6 7";
     const string customerFieldFunctions = "1 2 3 4 5";
@@ -16,6 +16,8 @@ int getFunction(functionType type) {
 
     string function;
     getline(cin, function);
+
+    if (type == listMgtFuncs && function == "Exit") return EXIT;
 
     // Validate user input
     while (true) {
