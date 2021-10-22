@@ -1,39 +1,39 @@
-# Store
-Video Rental Store  
+# Video Rental Store
 
-This project is an school assignment for course EEET2482, RMIT University Vietnam C2019  
+A simple CLI app for managing the stock and customers of a video rental store.
 
-A CLI program for managing stock and customers of a video rental store  
+----- RMIT University Vietnam -----<br>
+**Course:** EEET2482 - Software Engineering Design<br>
+**Semester:** 2019C<br>
+**Assessment:** Assignment 2<br>
+**Student Name:** Nguyen Minh Trang<br>
+**Student ID:** 3751450<br>
 
-Features:  
-	* item and customer categories  
-	* add, update, delete items and customers  
-	* rent and return item with restrictions  
-	* display items and customers by parameters  
-	* search for items or customers  
-	* auto promotion for regular customers  
-	* auto points and freebies for VIP customers  
-	* auto items and customers text files I/O  
+## 1. Introduction
+- This CLI program provides CRUD functions to manage stock and customer lists
 
-Details in file EEET2482_Assignment2_Sem3_2019.pdf (folder assignment)  
+## 2. Features
+- Item and customer categories  
+- Add, update, delete items and customers  
+- Rent and return item with restrictions  
+- Display items and customers by parameters  
+- Search for items or customers  
+- Auto promotion for regular customers  
+- Auto points and freebies for VIP customers  
+- Auto items and customers text files I/O  
 
-Usage:  
-	cmd: start store.exe customer_file_name item_file_name  
-	Terminal: ./store customer_file_name item_file_name  
+More details in file EEET2482_Assignment2_Sem3_2019.pdf (folder assignment).
 
-!!! IMPORTANT !!!  
-! Text files MUST BE of format:  
-	Item: Ixxx-yyyy, title, rentalType, loanType, numOfCopies, rentalFee, genre (if non-Game)  
-	Customer: Cxxx, name, address, phone, numOfPastRentals, level, points (if VIP)  
+## 3. Usage
+1. Build the execution file and put it in the same folder as input text files
+2. Run this command in Command Prompt:
+```start store.exe customer_file_name item_file_name```
+Terminal version:
+```./store customer_file_name item_file_name```
+
+
+### Notes 
+Text files MUST BE of format:  
+- Item: Ixxx-yyyy, title, rentalType, loanType, numOfCopies, rentalFee, genre (if non-Game)  
+- Customer: Cxxx, name, address, phone, numOfPastRentals, level, points (if VIP)  
 		  (list of rented IDs)  
-
-! Program validates user input but is prone to input file errors  
-! Careful with text files from other operating systems due to different line separators  
-
-Group "God saving me"  
-	s3751450, s3751450@rmit.edu.vn, Trang, Nguyen Minh  
-	s3750789, s3750789@rmit.edu.vn, Han, Tran Mach So  
-	s3574922, s3574922@rmit.edu.vn, Dat, Tran Quoc  
-
-
-
